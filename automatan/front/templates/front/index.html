@@ -1,21 +1,29 @@
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Automatan - прогноз потерии стоимости</title>
-  </head>
 
-  <body>
-    <h1>🚙Automatan!</h1>
-    <p>Отлично, теперь сюда нужно добавить машинки</p>
-    <p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Automatan - прогноз потерии стоимости</title>
+</head>
+
+<body>
+  <h1>🚙Automatan!</h1>
+  <li>
+    <s>Отлично, теперь сюда нужно добавить машинки</s>
+  </li>
+  <li>
+    <s>
       Теперь нужно придумать как переходить по каджой марке и попадать в выбор
       моделей писька тестосиська!
-    </p>
-    {% for brand in brands %}
-    <a href="">{{brand}}</a>
-    {% endfor %}
-    <a href="about/">О компании</a>
-  </body>
+    </s>
+    <p>блядь теперь тут все ок с лендроверами ебучими, а дальше все поломалось нахуй</p>
+    <s>Теперь разобраться с Лендроверами ебучими</s>
+  </li>
+  {% for brand in brands %}
+  <a href={{brand.url}}>{{brand.name}}</a>
+  {% endfor %}
+  <a href="about/">О компании</a>
+</body>
+
 </html>

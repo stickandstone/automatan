@@ -9,20 +9,63 @@ import sqlite3
 # Вот чтобы такую ебобятину не писать, как сверху, существует модуль шорткаты
 # Чтобы не писать функцию ХттпРеспонс
 
-conn = sqlite3.connect('MyData.db')
-c = conn.cursor()
-c.execute("SELECT company_name FROM manufactories")
-raw_list = c.fetchall()
-test_list = []
-for i in raw_list:
-    test_list.append(i[0])
+def get_brands_from_DB():
+    conn = sqlite3.connect('MyData.db')
+    c = conn.cursor()
+    c.execute("SELECT company_name FROM manufactories")
+    raw_list = c.fetchall()
+    brands_list = []
+    for i in raw_list:
+        brands_list.append(i[0])
+    return brands_list
+
+
+def query_to_DB(kinde, brand):
+    conn = sqlite3.connect('MyData.db')
+    c = conn.cursor()
+    return_list = []
+    return_list_url = []
+
+    if kinde == 'brands':
+        c.execute("SELECT company_name FROM manufactories")
+        raw_list = c.fetchall()
+        for i in raw_list:
+            temp = i[0]
+            # Чтобы линк с пробелом не подавать в рендер
+            temp = temp.replace(' ', '_')
+            return_list.append({'name': i[0], 'url': temp})
+            # return_list_url.append(temp)
+        return return_list
+    if kinde == 'models':
+        # А это просто оббосться как смешно, такой костыль дичайший.
+        brand = brand.replace('_', ' ')
+        print('OK I AM HERE')
+        c.execute("SELECT Model_name FROM car_names WHERE Brand_name=?", (brand,))
+        raw_list = c.fetchall()
+        for i in raw_list:
+            return_list.append(i[0])
+        print(return_list)
+        return return_list, brand
 
 
 def index(request):
+    print('Нихуя себе!')
+    # brands_list = get_brands_from_DB()
+    brands_list = query_to_DB('brands', None)
     context = {
-        'brands': test_list
+        'brands': brands_list
     }
+    print(context)
     return render(request, 'front/index.html', context)
+
+
+def brand(request, brand):
+    models_list, brand = query_to_DB('models', brand)
+    context = {
+        "brand": brand,
+        "models": models_list
+    }
+    return render(request, 'front/brand.html', context)
 
 
 def about(request):
