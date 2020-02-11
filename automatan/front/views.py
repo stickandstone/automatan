@@ -39,23 +39,19 @@ def query_to_DB(kinde, brand):
     if kinde == 'models':
         # А это просто оббосться как смешно, такой костыль дичайший.
         brand = brand.replace('_', ' ')
-        print('OK I AM HERE')
         c.execute("SELECT Model_name FROM car_names WHERE Brand_name=?", (brand,))
         raw_list = c.fetchall()
         for i in raw_list:
             return_list.append(i[0])
-        print(return_list)
         return return_list, brand
 
 
 def index(request):
-    print('Нихуя себе!')
     # brands_list = get_brands_from_DB()
     brands_list = query_to_DB('brands', None)
     context = {
         'brands': brands_list
     }
-    print(context)
     return render(request, 'front/index.html', context)
 
 
