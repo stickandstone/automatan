@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import sqlite3
+from . import graps
 # Create your views here.
 
 
@@ -62,6 +63,12 @@ def brand(request, brand):
         "models": models_list
     }
     return render(request, 'front/brand.html', context)
+
+
+def model(request, brand, model):
+    print('SUKASU!')
+    graps.build_grap(brand, model)
+    # return render(request, graps.build_grap(brand, model))
 
 
 def about(request):
