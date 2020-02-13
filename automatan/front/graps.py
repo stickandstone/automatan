@@ -1,9 +1,11 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import sqlite3
 from collections import Counter
+import sqlite3
+import matplotlib.pyplot as plt
+import numpy as np
+# import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
+# import seaborn as sns
 
 
 def cooking(raw_data):
@@ -35,6 +37,8 @@ def projet_to_axis(data):
 
 
 def build_grap(brand, model):
+    brand = brand.replace('_', ' ')
+    model = model.replace('_', ' ')
 
     conn = sqlite3.connect('MyData.db')
     c = conn.cursor()
@@ -74,8 +78,11 @@ def build_grap(brand, model):
     plt.legend()
     # plt.grid(True)
     plt.tight_layout()
+    plt.savefig(
+        'front/static/front/test.png', dpi=200)
+    plt.close()
 
-    plt.show()
+    # plt.show()
 
 
 # build_grap("Subaru", "Forester")
