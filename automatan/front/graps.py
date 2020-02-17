@@ -45,24 +45,27 @@ def build_grap(brand, model):
     # brand = "Kia"
     # model = "Rio"
 
-    query = f"SELECT year, price FROM cars WHERE brand='{brand}' AND model='{model}'"
+    query = f"SELECT year, price FROM cars WHERE brand='{brand}' AND model='{model}' AND year > '1999' "
+    c.execute(query)
+    raw_data_all = c.fetchall()
     c.execute(query + "AND gearbox='автомат'")
     raw_data_auto = c.fetchall()
     c.execute(query + "AND gearbox='механика'")
     raw_data_man = c.fetchall()
 
+    cooked_data_all = cooking(raw_data_all)
     cooked_data_auto = cooking(raw_data_auto)
     cooked_data_manual = cooking(raw_data_man)
 
     # перевернуть график
     # зарефакторить все под функцию, чтобы вызывалось по переменным
-
+    grap_all_x, grap_all_y = projet_to_axis(cooked_data_all)
     grap_auto_x, grap_auto_y = projet_to_axis(cooked_data_auto)
     grap_manual_x, grap_manual_y = projet_to_axis(cooked_data_manual)
 
     plt.style.use('fivethirtyeight')
     # plt.style.use('seaborn')
-
+    plt.plot(grap_all_x, grap_all_y, label='Все')
     plt.plot(grap_auto_x, grap_auto_y, label='Автомат')
     plt.plot(grap_manual_x, grap_manual_y, label='Механика')
 
@@ -70,6 +73,22 @@ def build_grap(brand, model):
     lo_lim = int(min(grap_manual_x))
     plt.xticks(np.arange(lo_lim, hi_lim+1))
     plt.xlim(hi_lim+1, lo_lim)
+
+    SMALL_SIZE = 8
+    MEDIUM_SIZE = 10
+    BIGGER_SIZE = 12
+
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=4)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=4)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)
+
+    SMALL_SIZE = 8
+    matplotlib.rc('font', size=SMALL_SIZE)
+    matplotlib.rc('axes', titlesize=SMALL_SIZE)
 
     plt.xlabel('Год выпуска')
     plt.ylabel('Цена')
