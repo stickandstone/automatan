@@ -10,6 +10,7 @@ matplotlib.use('Agg')
 
 def cooking(raw_data):
     raw_data = sorted(raw_data, key=lambda year: year[0])
+    print(raw_data)
     current_year = raw_data[0][0]
     prices_for_year = []
     result = []
@@ -53,24 +54,28 @@ def build_grap(brand, model):
     c.execute(query + "AND gearbox='механика'")
     raw_data_man = c.fetchall()
 
+    plt.style.use('fivethirtyeight')
+
     cooked_data_all = cooking(raw_data_all)
-    cooked_data_auto = cooking(raw_data_auto)
-    cooked_data_manual = cooking(raw_data_man)
+    if len(raw_data_auto) != 0:
+        cooked_data_auto = cooking(raw_data_auto)
+        grap_auto_x, grap_auto_y = projet_to_axis(cooked_data_auto)
+        plt.plot(grap_auto_x, grap_auto_y, label='Автомат')
+
+    if len(raw_data_man) != 0:
+        cooked_data_manual = cooking(raw_data_man)
+        grap_manual_x, grap_manual_y = projet_to_axis(cooked_data_manual)
+        plt.plot(grap_manual_x, grap_manual_y, label='Механика')
 
     # перевернуть график
     # зарефакторить все под функцию, чтобы вызывалось по переменным
     grap_all_x, grap_all_y = projet_to_axis(cooked_data_all)
-    grap_auto_x, grap_auto_y = projet_to_axis(cooked_data_auto)
-    grap_manual_x, grap_manual_y = projet_to_axis(cooked_data_manual)
 
-    plt.style.use('fivethirtyeight')
     # plt.style.use('seaborn')
     plt.plot(grap_all_x, grap_all_y, label='Все')
-    plt.plot(grap_auto_x, grap_auto_y, label='Автомат')
-    plt.plot(grap_manual_x, grap_manual_y, label='Механика')
 
-    hi_lim = int(max(grap_auto_x))
-    lo_lim = int(min(grap_manual_x))
+    hi_lim = int(max(grap_all_x))
+    lo_lim = int(min(grap_all_x))
     plt.xticks(np.arange(lo_lim, hi_lim+1))
     plt.xlim(hi_lim+1, lo_lim)
 

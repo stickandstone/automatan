@@ -10,11 +10,11 @@ import matplotlib
 
 conn = sqlite3.connect('MyData.db')
 c = conn.cursor()
-# brand = "Kia"
-# model = "Cerato"
-brand = "BMW"
+brand = "Mitsubishi"
+model = "L200"
+# brand = "BMW"
 
-model = "5-Series"
+# model = "7-Series"
 
 
 query = f"SELECT year, price FROM cars WHERE brand='{brand}' AND model='{model}'"
@@ -29,11 +29,13 @@ for item in raw_data:
     if current_year == item[0]:
         prices_for_year.append(item[1])
     else:
-        result.append([current_year, int(np.median(prices_for_year))])
+        # result.append([current_year, int(np.median(prices_for_year))])
+        result.append([current_year, int(np.average(prices_for_year))])
+
         prices_for_year = []
         current_year = item[0]
         prices_for_year.append(item[1])
-result.append([current_year, int(np.median(prices_for_year))])
+result.append([current_year, int(np.average(prices_for_year))])
 
 
 result.reverse()
@@ -43,7 +45,7 @@ mid_slope = []
 for i in range(len(result[:10])):
     calc = result[i][1] - result[i+1][1]
     if calc != 0:
-        slope = ((1/(calc))*10**6)*(-1)
+        slope = ((1/(calc))*10**5)*(-1)
         # if slope > 0:
         #     slope = 0
         # if slope < 4:

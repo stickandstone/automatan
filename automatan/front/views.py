@@ -49,11 +49,11 @@ def query_to_DB(kinde, brand):
         # А это просто оббосться как смешно, такой костыль дичайший.
         brand_link = brand
         brand_name = brand.replace('_', ' ')
-        print('BRAND', brand)
+        # print('BRAND', brand)
         c.execute(
             "SELECT Model_name FROM car_names WHERE Brand_name=? AND Quantity>10", (brand_name,))
         raw_list = c.fetchall()
-        print('RAWLIST', raw_list)
+        # print('RAWLIST', raw_list)
         for i in raw_list:
             temp = i[0]
             temp = temp.replace(' ', '_')
@@ -75,9 +75,9 @@ def index(request):
 
 def brand(request, brand):
     models_list, brand_name, brand_link = query_to_DB('models', brand)
-    print(brand_name)
-    print(brand_link)
-    print(models_list)
+    # print(brand_name)
+    # print(brand_link)
+    # print(models_list)
 
     context = {
         "brand_name": brand_name,
@@ -88,7 +88,7 @@ def brand(request, brand):
 
 
 def model(request, brand, model):
-    print('SUKASU!')
+    print('Start Graph Build!')
     graps.build_grap(brand, model)
     # return HttpResponse("<h1>Ready!</h1>")
     return render(request, 'front/car.html')
