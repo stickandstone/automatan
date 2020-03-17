@@ -90,8 +90,12 @@ def brand(request, brand):
 def model(request, brand, model):
     print('Start Graph Build!')
     graps.build_grap(brand, model)
+    context = {
+        "brand_name" : brand,
+        "model_name" : model
+    }
     # return HttpResponse("<h1>Ready!</h1>")
-    return render(request, 'front/car.html')
+    return render(request, 'front/car.html', context)
 
 
 def about(request):

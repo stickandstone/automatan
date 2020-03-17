@@ -1,9 +1,19 @@
-<!-- <h1>{{brand}}</h1> -->
-<s>Так вот это уже супер заебись! Теперь нужно передать из БД сюда каждую машинку.</s>
-<s>ПОЛОМАЛИСЬ ЕБУЧИЕ ЛЕНРОВЕРЫ!</s>
+{% extends "front/base.html" %}
+
+{% block content %}
 <h1>{{brand_name}}</h1>
-<a href="/">Вернуться в зад</a>
-{% for model in models %}
-<!-- <p>{{model}}</p> -->
-<a href=/{{brand_link}}/{{model.url}}>{{model.name}}</a>
-{% endfor %}
+<a href="/" class="btn btn-outline-primary">Вернуться назад</a>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% for model in models %}
+            <!-- <p>{{model}}</p> -->
+            <a href=/{{brand_link}}/{{model.url}}>{{model.name}}</a>
+            {% empty %}
+            <p>По этой марке пока нет данных, она слишком редкая 😔</p>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

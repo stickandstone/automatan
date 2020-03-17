@@ -46,7 +46,7 @@ def build_grap(brand, model):
     # brand = "Kia"
     # model = "Rio"
 
-    query = f"SELECT year, price FROM cars WHERE brand='{brand}' AND model='{model}' AND year > '1999' "
+    query = f"SELECT year, price FROM cars WHERE brand='{brand}' AND model='{model}' AND year > '1990' "
     c.execute(query)
     raw_data_all = c.fetchall()
     c.execute(query + "AND gearbox='автомат'")
