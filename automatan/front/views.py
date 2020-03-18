@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import sqlite3
-from . import graps
+from . import graps, slopes_calc
 from django.http import HttpResponse
 # Create your views here.
 
@@ -90,9 +90,11 @@ def brand(request, brand):
 def model(request, brand, model):
     print('Start Graph Build!')
     graps.build_grap(brand, model)
+    slope_index = slopes_calc.slope_starter(brand, model)
     context = {
-        "brand_name" : brand,
-        "model_name" : model
+        "brand_name": brand,
+        "model_name": model,
+        "slope_index": slope_index
     }
     # return HttpResponse("<h1>Ready!</h1>")
     return render(request, 'front/car.html', context)

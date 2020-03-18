@@ -10,7 +10,7 @@ matplotlib.use('Agg')
 
 def cooking(raw_data):
     raw_data = sorted(raw_data, key=lambda year: year[0])
-    print(raw_data)
+    # print(raw_data)
     current_year = raw_data[0][0]
     prices_for_year = []
     result = []
