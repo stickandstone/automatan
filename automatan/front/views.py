@@ -2,6 +2,10 @@ from django.shortcuts import render
 import sqlite3
 from . import graps, slopes_calc
 from django.http import HttpResponse
+# from front.forms import IndexForm
+from django import forms
+from . import models
+
 # Create your views here.
 
 
@@ -13,7 +17,13 @@ from django.http import HttpResponse
 # Надо чертые листа, list_of_Brands_for_link, list_of_Models_for_link
 # list_Of_Brand_Name, list_Of_Model_Name
 #
-#
+# Концепция запроса через линк оказалась неудачной. Нужно ее изменить. НО как? Давай подумаем.
+
+def get(request):
+    form = IndexForm
+    # return render HttpResponse("<h1>Test karatest!</h1>")
+
+
 def get_brands_from_DB():
     conn = sqlite3.connect('MyData.db')
     c = conn.cursor()
@@ -45,15 +55,16 @@ def query_to_DB(kinde, brand):
             brands_list.append({'name': i[0], 'url': temp})
             # тут у нас на выходе лист со словорями [{'name': Land rover, url: Land_rover}]
         return brands_list
+
     if kinde == 'models':
         # А это просто оббосться как смешно, такой костыль дичайший.
-        brand_link = brand
+        brand_link = brand.replace(' ', '_')
         brand_name = brand.replace('_', ' ')
-        # print('BRAND', brand)
+        print('BRAND', brand)
         c.execute(
             "SELECT Model_name FROM car_names WHERE Brand_name=? AND Quantity>10", (brand_name,))
         raw_list = c.fetchall()
-        # print('RAWLIST', raw_list)
+        print('RAWLIST', raw_list)
         for i in raw_list:
             temp = i[0]
             temp = temp.replace(' ', '_')
@@ -65,10 +76,9 @@ def query_to_DB(kinde, brand):
 
 
 def index(request):
-    # brands_list = get_brands_from_DB()
-    brands_list = query_to_DB('brands', None)
+    brands_list = models.Manufactories.objects.all()
     context = {
-        'brands': brands_list
+        'brands': brands_list,
     }
     return render(request, 'front/index.html', context)
 
