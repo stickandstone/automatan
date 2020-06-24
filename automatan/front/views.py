@@ -17,11 +17,10 @@ from . import models
 # Надо чертые листа, list_of_Brands_for_link, list_of_Models_for_link
 # list_Of_Brand_Name, list_Of_Model_Name
 #
-# Концепция запроса через линк оказалась неудачной. Нужно ее изменить. НО как? Давай подумаем.
 
-def get(request):
-    form = IndexForm
-    # return render HttpResponse("<h1>Test karatest!</h1>")
+# def get(request):
+#     form = IndexForm
+# return render HttpResponse("<h1>Test karatest!</h1>")
 
 
 def get_brands_from_DB():
@@ -33,10 +32,6 @@ def get_brands_from_DB():
     for i in raw_list:
         brands_list.append(i[0])
     return brands_list
-
-
-def listsMaker():
-    return
 
 
 def query_to_DB(kinde, brand):
@@ -71,23 +66,32 @@ def query_to_DB(kinde, brand):
             models_list.append({'name': i[0], 'url': temp})
         return models_list, brand_name, brand_link
 
-# links_models
-# links_brands
-
 
 def index(request):
-    brands_list = models.Manufactories.objects.all()
+    brands_list = list(models.Manufactories.objects.all())
+    brands = []
+
+    for i in brands_list:
+        brands.append({'name': i, 'link': str(i).replace(' ', '_')})
+
     context = {
-        'brands': brands_list,
+        "brands": brands
     }
     return render(request, 'front/index.html', context)
 
 
+# def brand(request, brand):
+#     models_list, brand_name, brand_link = query_to_DB('models', brand)
+
+#     context = {
+#         "brand_name": brand_name,
+#         "brand_link": brand_link,
+#         "models": models_list
+#     }
+#     return render(request, 'front/brand.html', context)
+
 def brand(request, brand):
     models_list, brand_name, brand_link = query_to_DB('models', brand)
-    # print(brand_name)
-    # print(brand_link)
-    # print(models_list)
 
     context = {
         "brand_name": brand_name,

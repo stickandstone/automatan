@@ -7,19 +7,9 @@
 <div class="container">
   <div class="row row-cols-3">
     {% for line in brands %}
-    <a href=/{{line.company_name}}>{{line.company_name}} </a>
+    <a href=/{{line.link}}>{{line.name}} </a>
     {% endfor %}
   </div>
 </div>
-<!-- 
-<div class="container">
-  <div class="row row-cols-3">
-    {% for brand in brands %}
-    <div class="col">
-      <a href=/{{brand.url}}>{{brand.name}}</a>
-    </div>
-    {% endfor %}
-  </div>
-</div> -->
 
 {% endblock content %}

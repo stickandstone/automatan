@@ -54,5 +54,5 @@ class Manufactories(models.Model):
         managed = False
         db_table = 'manufactories'
 
-    def __repr__(self):
+    def __str__(self):
         return self.company_name
