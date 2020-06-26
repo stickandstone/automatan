@@ -59,7 +59,6 @@ def query_to_DB(kinde, brand):
         c.execute(
             "SELECT Model_name FROM car_names WHERE Brand_name=? AND Quantity>10", (brand_name,))
         raw_list = c.fetchall()
-        print('RAWLIST', raw_list)
         for i in raw_list:
             temp = i[0]
             temp = temp.replace(' ', '_')
@@ -91,6 +90,8 @@ def index(request):
 #     return render(request, 'front/brand.html', context)
 
 def brand(request, brand):
+    # test_list = models.CarNames.filter('bmw')
+    # print(test_list)
     models_list, brand_name, brand_link = query_to_DB('models', brand)
 
     context = {
