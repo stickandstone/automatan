@@ -90,16 +90,13 @@ def index(request):
 
 def brand(request, brand):
     models_list = []
-    print('|__'*100, brand)
-
-    test_list = models.CarNames.objects.filter(brand_name=brand)
-    for i in test_list:
-        print(i.model_name)
-        print(i.model_link)
-        models_list.append(
-            {'name': i.model_name, 'url': i.model_name.replace(' ', '_')})
-    brand_link = brand.replace(' ', '_')
     brand_name = brand.replace('_', ' ')
+
+    test_list = models.CarNames.objects.filter(brand_name=brand_name)
+    for i in test_list:
+        models_list.append(
+            {'name': i.model_name.replace('_', ' '), 'url': i.model_name.replace(' ', '_')})
+    brand_link = brand.replace(' ', '_')
     print(test_list)
     # models_list, brand_name, brand_link = query_to_DB('models', brand)
 
@@ -116,8 +113,8 @@ def model(request, brand, model):
     graps.build_grap(brand, model)
     slope_index = slopes_calc.slope_starter(brand, model)
     context = {
-        "brand_name": brand,
-        "model_name": model,
+        "brand_name": brand.replace('_', ' '),
+        "model_name": model.replace('_', ' '),
         "slope_index": slope_index
     }
     # return HttpResponse("<h1>Ready!</h1>")
