@@ -17,7 +17,7 @@ class CarNames(models.Model):
         db_table = 'car_names'
 
     # def __str__(self):
-    #     return self.car_names
+    #     return self.model_name
 
 
 class Cars(models.Model):
