@@ -1,10 +1,51 @@
 {% extends 'front/base.html' %}
 
 {% block content %}
+{% load static %}
 <h1>График падения цены {{brand_name}} {{model_name}}</h1>
+<canvas id="myChart"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<script>
+    // console.log('{{js_data|escapejs}}')
+    // var data = JSON.parse("{{js_data|escapejs}}")
+    var labels = JSON.parse("{{js_lables|escapejs}}")
+    var data_price = JSON.parse("{{js_price|escapejs}}")
+    var name = "{{brand_name}}" + "{{model_name}}"
+    console.log(labels)
+    console.log(data_price)
+
+    console.log("GRAPH STARTED");
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: "line",
+        // The data for our dataset
+        data: {
+            labels: labels,
+
+            datasets: [
+                {
+                    label: name,
+                    backgroundColor: "rgb(255, 99, 132)",
+                    borderColor: "rgb(255, 9, 13)",
+                    data: data_price,
+                },
+            ],
+        },
+
+        // Configuration options go here
+        options: {},
+    });
+
+</script>
+
+
+
+<!-- <script src="{% static 'front/graph_test.js' %}"></script> -->
+
 <!-- <button type="button" onclick=""></button> -->
 <a href="/{{brand_name}}" class="btn btn-outline-primary">Вернуться назад</a>
-{% load static %}
 <p>Средний слоуп иднекс этой модели = {{slope_index}}</p>
 <img src="{% static 'front/test.png' %}" class="img-fluid" alt="Картинка">
 <img src="{% static 'front/test_slope.png' %}" class="img-fluid" alt="Картинка слоупа">
