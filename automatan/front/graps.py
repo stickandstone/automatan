@@ -38,8 +38,8 @@ def projet_to_axis(data):
 
 
 def build_grap(brand, model):
-    brand = brand.replace('_', ' ')
-    model = model.replace('_', ' ')
+    # brand = brand.replace('_', ' ')
+    # model = model.replace('_', ' ')
 
     conn = sqlite3.connect('MyData.db')
     c = conn.cursor()

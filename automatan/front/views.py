@@ -43,16 +43,17 @@ def brand(request, brand):
 
 
 def model(request, brand, model):
-    js_data, js_lables, js_price = graps_JSON(brand, model)
-    print(js_data)
-    graps.build_grap(brand, model)
+    brand = brand.replace('_', ' ')
+    model = model.replace('_', ' ')
+    js_lables, js_price = graps_JSON(brand, model)
+    # graps.build_grap(brand, model)
     slope_index = slopes_calc.slope_starter(brand, model)
 
     context = {
-        'brand_name': brand.replace('_', ' '),
-        'model_name': model.replace('_', ' '),
+        'brand_name': brand,
+        'model_name': model,
         'slope_index': slope_index,
-        'js_data': js_data,
+        # 'js_data': js_data,
         'js_lables': js_lables,
         'js_price': js_price,
     }
@@ -64,6 +65,7 @@ def about(request):
 
 
 def graps_JSON(brand, model):
+    print(brand, model)
     # create JSON for graps on page
     lables = []
 
@@ -89,19 +91,19 @@ def graps_JSON(brand, model):
     lables.append(str(current_year))
     data_price.append(int(np.median(price_for_specific_year)))
 
-    print(lables)
-    print(data_price)
+    # print(lables)
+    # print(data_price)
     # lables_js = json.dumps
-    data_to_JSON = {'data': {'labels': lables}, 'datasets': [{'lablel': brand + ' ' + model,
-                                                              'backgroundColor': 'rgb(255, 99, 132)',
-                                                              'borderColor': 'rgb(255, 9, 13)',
-                                                              'data': data_price, }]}
+    # data_to_JSON = {'data': {'labels': lables}, 'datasets': [{'lablel': brand + ' ' + model,
+    #                                                           'backgroundColor': 'rgb(255, 99, 132)',
+    #                                                           'borderColor': 'rgb(255, 9, 13)',
+    #                                                           'data': data_price, }]}
 
-    js_data = json.dumps(data_to_JSON)
+    # js_data = json.dumps(data_to_JSON)
     lables = json.dumps(lables)
     data_price = json.dumps(data_price)
     # return json.dumps({"data": js_data})
-    return js_data, lables, data_price
+    return lables, data_price
     # print(resultList)
     # print(np.median())
     # print(selected_cars)

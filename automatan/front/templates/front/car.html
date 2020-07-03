@@ -3,8 +3,11 @@
 {% block content %}
 {% load static %}
 <h1>График падения цены {{brand_name}} {{model_name}}</h1>
+<a href="/{{brand_name}}" class="btn btn-outline-primary">Вернуться назад</a>
+
 <canvas id="myChart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
 
 <script>
     // console.log('{{js_data|escapejs}}')
@@ -45,9 +48,8 @@
 <!-- <script src="{% static 'front/graph_test.js' %}"></script> -->
 
 <!-- <button type="button" onclick=""></button> -->
-<a href="/{{brand_name}}" class="btn btn-outline-primary">Вернуться назад</a>
 <p>Средний слоуп иднекс этой модели = {{slope_index}}</p>
-<img src="{% static 'front/test.png' %}" class="img-fluid" alt="Картинка">
+<!-- <img src="{% static 'front/test.png' %}" class="img-fluid" alt="Картинка"> -->
 <img src="{% static 'front/test_slope.png' %}" class="img-fluid" alt="Картинка слоупа">
 
 {% endblock content %}
