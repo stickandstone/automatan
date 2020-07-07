@@ -1,15 +1,25 @@
 {% extends "front/base.html" %}
 {% block content %}
-<p>Узнайте как будет дешеветь машина на российском вторичном рынке. Воспользуйтесь поиском или выберите
+<p class="text-center">Узнайте как будет дешеветь машина на российском вторичном рынке. Воспользуйтесь поиском или
+  выберите
   марку
   из списка ниже.</p>
-
 <div class="container">
-  <div class="row row-cols-3">
-    {% for line in brands %}
-    <a href=/{{line.link}}>{{line.name}} </a>
-    {% endfor %}
+
+  {% for letter in brands %}
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      {{letter.letter}}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      {% for brand in letter.brands%}
+      <a class="dropdown-item" href=/{{brand.link}}>{{brand.name}}</a>
+      {% endfor %}
+    </div>
+
   </div>
+  {% endfor %}
 </div>
 
 {% endblock content %}

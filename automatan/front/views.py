@@ -13,11 +13,31 @@ import json
 def index(request):
     brands_list = list(models.Manufactories.objects.all())
     brands = []
+    check_letter = []
+    super_list = []
+
+    # первая инициализация
+    first_init = str(brands_list[0])
+    first_letter = first_init[0]
+    check_letter.append(first_letter)
 
     for i in brands_list:
-        brands.append({'name': i, 'link': str(i).replace(' ', '_')})
+        temp_list = []
+        letter = str(i)[0]
+        url = str(i).replace(' ', '_')
+        # добавляем заглавную букву для навигации
+        if letter not in check_letter:
+            previous_letter = check_letter[-1]
+            super_list.append({"letter": previous_letter, "brands": brands})
+            check_letter.append(letter)
+            brands = []
+            brands.append({'name': i, 'link': url})
+        else:
+            brands.append({'name': i, 'link': url})
+
     context = {
-        'brands': brands
+        'brands': super_list,
+        'iter_list': check_letter
     }
 
     return render(request, 'front/index.html', context)
@@ -26,9 +46,10 @@ def index(request):
 def brand(request, brand):
     models_list = []
     brand_name = brand.replace('_', ' ')
-    test_list = models.CarNames.objects.filter(brand_name=brand_name)
+    query_list = models.CarNames.objects.filter(brand_name=brand_name)
 
-    for i in test_list:
+    for i in query_list:
+        print(i.model_name[0])
         models_list.append(
             {'name': i.model_name.replace('_', ' '), 'url': i.model_name.replace(' ', '_')})
     brand_link = brand.replace(' ', '_')

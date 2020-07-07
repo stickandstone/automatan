@@ -56,3 +56,12 @@ class Manufactories(models.Model):
 
     def __str__(self):
         return self.company_name
+
+    def get_list_ofLetters(self, company_name):
+
+        list_ofLetters = []
+        for i in company_name:
+            i = str(i)
+            if i[0] not in list_ofLetters:
+                list_ofLetters.append(i[0])
+        return list_ofLetters
