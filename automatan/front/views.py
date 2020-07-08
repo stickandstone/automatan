@@ -50,37 +50,48 @@ def index(request):
 def brand(request, brand):
     models_list = []
     super_list = []
-    brand_name = brand.replace('_', ' ')
+    brand_name_with_spaces = brand.replace('_', ' ')
     query_list = models.CarNames.objects.filter(
-        brand_name=brand_name, quantity__gt=10)
+        brand_name=brand_name_with_spaces, quantity__gt=10).order_by('model_name')
+    for i in query_list:
+        print(i.model_name)
     # Извлечение первой буквы\цифры названия модели
     check_letter = []
     check_letter.append(query_list[0].model_name[0])
 
     for i in query_list:
+
         letter = i.model_name[0]
+        if 'T' in check_letter:
+            print(letter)
         model_name = i.model_name.replace('_', ' ')
         model_url = i.model_name.replace(' ', '_')
         if letter not in check_letter:
+            print("************************")
+            print(letter)
+
             previous_letter = check_letter[-1]
             super_list.append(
                 {"letter": previous_letter, "models": models_list})
             check_letter.append(letter)
             models_list = []
 
+        print(i.model_name)
         models_list.append(
             {'name': model_name, 'url': model_url})
 
     # NOT DRY ENOUGH
     # Приходится повторятся, чтобы добавить модель на последнюю букву см issues #12
-    previous_letter = check_letter[-1]
-    super_list.append(
-        {"letter": previous_letter, "models": models_list})
+    # previous_letter = check_letter[-1]
+    # super_list.append(
+    #     {"letter": previous_letter, "models": models_list})
 
     brand_link = brand.replace(' ', '_')
-    print(super_list)
+    # for i in super_list:
+    #     print(i)
+
     context = {
-        'brand_name': brand_name,
+        'brand_name': brand_name_with_spaces,
         'brand_link': brand_link,
         'models': super_list
     }
@@ -89,6 +100,7 @@ def brand(request, brand):
 
 
 def model(request, brand, model):
+    print(model)
     brand = brand.replace('_', ' ')
     model = model.replace('_', ' ')
     js_lables, js_price = graps_JSON(brand, model)

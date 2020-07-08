@@ -8,8 +8,8 @@ class CarNames(models.Model):
         db_column='Brand_name', blank=True, null=True)
     model_link = models.TextField(
         db_column='Model_Link', blank=True, null=True)
-    model_name = models.TextField(
-        db_column='Model_name', blank=True, null=True)
+    model_name = models.CharField(
+        db_column='Model_name', blank=True, null=False, max_length=30)
     quantity = models.IntegerField(db_column='Quantity', blank=True, null=True)
 
     class Meta:
