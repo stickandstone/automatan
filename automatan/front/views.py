@@ -25,15 +25,19 @@ def index(request):
         temp_list = []
         letter = str(i)[0]
         url = str(i).replace(' ', '_')
+
         # добавляем заглавную букву для навигации
         if letter not in check_letter:
             previous_letter = check_letter[-1]
             super_list.append({"letter": previous_letter, "brands": brands})
             check_letter.append(letter)
             brands = []
-            brands.append({'name': i, 'link': url})
-        else:
-            brands.append({'name': i, 'link': url})
+
+        brands.append({'name': i, 'link': url})
+    # NOT DRY ENOUGH
+    # Приходится повторятся, чтобы добавить модель на последнюю букву см issues #12
+    previous_letter = check_letter[-1]
+    super_list.append({"letter": previous_letter, "brands": brands})
 
     context = {
         'brands': super_list,
@@ -45,19 +49,40 @@ def index(request):
 
 def brand(request, brand):
     models_list = []
+    super_list = []
     brand_name = brand.replace('_', ' ')
-    query_list = models.CarNames.objects.filter(brand_name=brand_name)
+    query_list = models.CarNames.objects.filter(
+        brand_name=brand_name, quantity__gt=10)
+    # Извлечение первой буквы\цифры названия модели
+    check_letter = []
+    check_letter.append(query_list[0].model_name[0])
 
     for i in query_list:
-        print(i.model_name[0])
-        models_list.append(
-            {'name': i.model_name.replace('_', ' '), 'url': i.model_name.replace(' ', '_')})
-    brand_link = brand.replace(' ', '_')
+        letter = i.model_name[0]
+        model_name = i.model_name.replace('_', ' ')
+        model_url = i.model_name.replace(' ', '_')
+        if letter not in check_letter:
+            previous_letter = check_letter[-1]
+            super_list.append(
+                {"letter": previous_letter, "models": models_list})
+            check_letter.append(letter)
+            models_list = []
 
+        models_list.append(
+            {'name': model_name, 'url': model_url})
+
+    # NOT DRY ENOUGH
+    # Приходится повторятся, чтобы добавить модель на последнюю букву см issues #12
+    previous_letter = check_letter[-1]
+    super_list.append(
+        {"letter": previous_letter, "models": models_list})
+
+    brand_link = brand.replace(' ', '_')
+    print(super_list)
     context = {
         'brand_name': brand_name,
         'brand_link': brand_link,
-        'models': models_list
+        'models': super_list
     }
 
     return render(request, 'front/brand.html', context)
@@ -86,7 +111,7 @@ def about(request):
 
 
 def graps_JSON(brand, model):
-    print(brand, model)
+    # print(brand, model)
     # create JSON for graps on page
     lables = []
 

@@ -6,9 +6,14 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            {% for model in models %}
+            {% for item in models %}
+            <p>{{item.letter}}</p>
+            {% for name in item.models %}
+
+            <a href=/{{brand_link}}/{{name.url}}>{{name.name}}</a>
+            {% endfor %}
+
             <!-- <p>{{model}}</p> -->
-            <a href=/{{brand_link}}/{{model.url}}>{{model.name}}</a>
             {% empty %}
             <p>По этой марке пока нет данных, она слишком редкая 😔</p>
             {% endfor %}
