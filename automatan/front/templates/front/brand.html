@@ -18,8 +18,9 @@
     <div class="container-xl">
         <div class="row">
             {% for item in models %}
-            <div class="{% cycle 'col' 'col' 'col' 'col' 'col' 'w-100' as class_name %}">
-                {% if class_name != 'w-100' %}
+            <div class="col">
+                <div class="{% cycle 'col' 'col' 'col' 'col' 'col' 'row' %}">
+                </div>
                 <div class="card border-white" style="width: 12rem; margin-bottom: 2rem;">
                     <div class="card-body">
                         <h5 class="card-title"
@@ -33,7 +34,6 @@
                         {% endfor %}
                     </div>
                 </div>
-                {% endif %}
             </div>
             {% endfor %}
         </div>

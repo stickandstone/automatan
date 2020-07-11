@@ -22,12 +22,14 @@ def index(request):
     check_letter.append(first_letter)
 
     for i in brands_list:
+        print(i)
         temp_list = []
         letter = str(i)[0]
         url = str(i).replace(' ', '_')
 
         # добавляем заглавную букву для навигации
         if letter not in check_letter:
+            print(letter, i)
             previous_letter = check_letter[-1]
             super_list.append({"letter": previous_letter, "brands": brands})
             check_letter.append(letter)
@@ -104,12 +106,12 @@ def model(request, brand, model):
     model = model.replace('_', ' ')
     js_lables, js_price = graps_JSON(brand, model)
     # graps.build_grap(brand, model)
-    slope_index = slopes_calc.slope_starter(brand, model)
+    # slope_index = slopes_calc.slope_starter(brand, model)
 
     context = {
         'brand_name': brand,
         'model_name': model,
-        'slope_index': slope_index,
+        # 'slope_index': slope_index,
         # 'js_data': js_data,
         'js_lables': js_lables,
         'js_price': js_price,
@@ -148,19 +150,6 @@ def graps_JSON(brand, model):
     lables.append(str(current_year))
     data_price.append(int(np.median(price_for_specific_year)))
 
-    # print(lables)
-    # print(data_price)
-    # lables_js = json.dumps
-    # data_to_JSON = {'data': {'labels': lables}, 'datasets': [{'lablel': brand + ' ' + model,
-    #                                                           'backgroundColor': 'rgb(255, 99, 132)',
-    #                                                           'borderColor': 'rgb(255, 9, 13)',
-    #                                                           'data': data_price, }]}
-
-    # js_data = json.dumps(data_to_JSON)
     lables = json.dumps(lables)
     data_price = json.dumps(data_price)
-    # return json.dumps({"data": js_data})
     return lables, data_price
-    # print(resultList)
-    # print(np.median())
-    # print(selected_cars)
