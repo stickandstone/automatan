@@ -53,50 +53,49 @@ def brand(request, brand):
     brand_name_with_spaces = brand.replace('_', ' ')
     query_list = models.CarNames.objects.filter(
         brand_name=brand_name_with_spaces, quantity__gt=10).order_by('model_name')
-    for i in query_list:
-        print(i.model_name)
     # Извлечение первой буквы\цифры названия модели
     check_letter = []
-    check_letter.append(query_list[0].model_name[0])
+    try:
+        check_letter.append(query_list[0].model_name[0])
 
-    for i in query_list:
+        for i in query_list:
 
-        letter = i.model_name[0]
-        if 'T' in check_letter:
-            print(letter)
-        model_name = i.model_name.replace('_', ' ')
-        model_url = i.model_name.replace(' ', '_')
-        if letter not in check_letter:
-            print("************************")
-            print(letter)
+            letter = i.model_name[0]
+            model_name = i.model_name.replace('_', ' ')
+            model_url = i.model_name.replace(' ', '_')
+            if letter not in check_letter:
+                previous_letter = check_letter[-1]
+                super_list.append(
+                    {"letter": previous_letter, "models": models_list})
+                check_letter.append(letter)
+                models_list = []
 
-            previous_letter = check_letter[-1]
-            super_list.append(
-                {"letter": previous_letter, "models": models_list})
-            check_letter.append(letter)
-            models_list = []
+            print(i.model_name)
+            models_list.append(
+                {'name': model_name, 'url': model_url})
 
-        print(i.model_name)
-        models_list.append(
-            {'name': model_name, 'url': model_url})
+        # NOT DRY ENOUGH
+        # Приходится повторятся, чтобы добавить модель на последнюю букву см issues #12
+        previous_letter = check_letter[-1]
+        super_list.append(
+            {"letter": previous_letter, "models": models_list})
 
-    # NOT DRY ENOUGH
-    # Приходится повторятся, чтобы добавить модель на последнюю букву см issues #12
-    # previous_letter = check_letter[-1]
-    # super_list.append(
-    #     {"letter": previous_letter, "models": models_list})
+        brand_link = brand.replace(' ', '_')
+        # for i in super_list:
+        #     print(i)
 
-    brand_link = brand.replace(' ', '_')
-    # for i in super_list:
-    #     print(i)
-
-    context = {
-        'brand_name': brand_name_with_spaces,
-        'brand_link': brand_link,
-        'models': super_list
-    }
-
-    return render(request, 'front/brand.html', context)
+        context = {
+            'brand_name': brand_name_with_spaces,
+            'brand_link': brand_link,
+            'models': super_list
+        }
+        return render(request, 'front/brand.html', context)
+    except:
+        print('pizda')
+        context = {
+            "error": True
+        }
+        return render(request, 'front/brand.html', context)
 
 
 def model(request, brand, model):
@@ -165,71 +164,3 @@ def graps_JSON(brand, model):
     # print(resultList)
     # print(np.median())
     # print(selected_cars)
-
-
-# def get_brands_from_DB():
-#     conn = sqlite3.connect('MyData.db')
-#     c = conn.cursor()
-#     c.execute('SELECT company_name FROM manufactories')
-#     raw_list = c.fetchall()
-#     brands_list = []
-#     for i in raw_list:
-#         brands_list.append(i[0])
-#     return brands_list
-
-
-# def brand(request, brand):
-#     models_list, brand_name, brand_link = query_to_DB('models', brand)
-
-#     context = {
-#         'brand_name': brand_name,
-#         'brand_link': brand_link,
-#         'models': models_list
-#     }
-#     return render(request, 'front/brand.html', context)
-
-
-# def index(request):
-#     return HttpResponse('<h1>Test karatest!</h1>')
-# Вот чтобы такую ебобятину не писать, как сверху, существует модуль шорткаты
-# Чтобы не писать функцию ХттпРеспонс
-#
-# Надо чертые листа, list_of_Brands_for_link, list_of_Models_for_link
-# list_Of_Brand_Name, list_Of_Model_Name
-#
-
-# def get(request):
-#     form = IndexForm
-# return render HttpResponse('<h1>Test karatest!</h1>')
-
-
-# def query_to_DB(kinde, brand):
-#     conn = sqlite3.connect('MyData.db')
-#     c = conn.cursor()
-#     brands_list = []
-#     models_list = []
-
-#     if kinde == 'brands':
-#         c.execute('SELECT company_name FROM manufactories')
-#         raw_list = c.fetchall()
-#         for i in raw_list:
-#             temp = i[0]
-#             # Чтобы линк с пробелом не подавать в рендер
-#             temp = temp.replace(' ', '_')
-#             brands_list.append({'name': i[0], 'url': temp})
-#             # тут у нас на выходе лист со словорями [{'name': Land rover, url: Land_rover}]
-#         return brands_list
-
-#     if kinde == 'models':
-#         # А это просто оббосться как смешно, такой костыль дичайший.
-#         brand_link = brand.replace(' ', '_')
-#         brand_name = brand.replace('_', ' ')
-#         print('BRAND', brand)
-#         c.execute(
-#             'SELECT Model_name FROM car_names WHERE Brand_name=? AND Quantity>10', (brand_name,))
-#         raw_list = c.fetchall()
-#         for i in raw_list:
-#             temp = i[0]
-#             temp = temp.replace(' ', '_')
-#             models_list.append({'name': i[0], 'url': temp})
-#         return models_list, brand_name, brand_link

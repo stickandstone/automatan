@@ -4,24 +4,27 @@
   выберите
   марку
   из списка ниже.</p>
-<div class="container">
-
-
-
-  {% for letter in brands %}
-
-  <h5>
-    {{letter.letter}}
-  </h5>
-  {% for brand in letter.brands%}
-  <a href=/{{brand.link}}>{{brand.name}}</a>
-  {% endfor %}
-
-
-  {% endfor %}
-
-
-
+<div class="container-xl">
+  <div class="row">
+    {% for letter in brands %}
+    <div class="{% cycle 'col' 'col' 'col' 'col' 'col' 'w-100' as class_name %}">
+      {% if class_name != 'w-100' %}
+      <div class="card border-white" style="width: 12rem; margin-bottom: 2rem;">
+        <div class="card-body">
+          <h5 class="card-title"
+            style="border-bottom: 2px; border-bottom-style: solid; border-bottom-color: #c5ede0; padding-bottom: 0.6rem;">
+            {{letter.letter}}
+          </h5>
+          {% for brand in letter.brands%}
+          <div>
+            <a href=/{{brand.link}} class="card-link">{{brand.name}}</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
 </div>
-
 {% endblock content %}
