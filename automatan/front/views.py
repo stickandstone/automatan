@@ -11,6 +11,11 @@ import json
 
 
 def index(request):
+
+    # Number of visits to this view, as counted in the session variable.
+    num_visits=request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits+1
+
     brands_list = list(models.Manufactories.objects.all())
     brands = []
     check_letter = []
@@ -43,7 +48,8 @@ def index(request):
 
     context = {
         'brands': super_list,
-        'iter_list': check_letter
+        'iter_list': check_letter,
+        'num_visits':num_visits
     }
 
     return render(request, 'front/index.html', context)
