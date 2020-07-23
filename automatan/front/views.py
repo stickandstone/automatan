@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import sqlite3
 from . import graps, slopes_calc
 from django.http import HttpResponse
@@ -8,12 +8,13 @@ from . import models
 import numpy as np
 import json
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import (authenticate,
+                                 login
+                                 )
+from .forms import UserLoginForm
+
 # Create your views here.
 
-
-# def login(request):
-#     # return render(request, HttpResponse('Нахуй иди пидр'))
-#     return HttpResponse('<h1>Нахуй шел пидорас ебаный</h1>')
 
 @login_required
 def index(request):
@@ -170,9 +171,22 @@ def graps_JSON(brand, model):
     return lables, data_price
 
 
-def login(request):
-    return render(request, 'front/accounts/login.html')
-    # return HttpResponse("<p>Pidor nahyi idi otsuda Huli ti xotel?</p>")
+def login_view(request):
+    next = request.GET.get('next')
+    form = UserLoginForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        if next:
+            return redirect(next)
+        return redirect('/')
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'front/accounts/login.html', context)
 
 
 def test(request):
