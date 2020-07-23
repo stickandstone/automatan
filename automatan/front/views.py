@@ -7,13 +7,19 @@ from django import forms
 from . import models
 import numpy as np
 import json
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
+# def login(request):
+#     # return render(request, HttpResponse('Нахуй иди пидр'))
+#     return HttpResponse('<h1>Нахуй шел пидорас ебаный</h1>')
+
+@login_required
 def index(request):
 
     # Number of visits to this view, as counted in the session variable.
-    num_visits=request.session.get('num_visits', 0)
+    num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits+1
 
     brands_list = list(models.Manufactories.objects.all())
@@ -49,12 +55,13 @@ def index(request):
     context = {
         'brands': super_list,
         'iter_list': check_letter,
-        'num_visits':num_visits
+        'num_visits': num_visits
     }
 
     return render(request, 'front/index.html', context)
 
 
+@login_required
 def brand(request, brand):
     models_list = []
     super_list = []
@@ -106,6 +113,7 @@ def brand(request, brand):
         return render(request, 'front/brand.html', context)
 
 
+@login_required
 def model(request, brand, model):
     print(model)
     brand = brand.replace('_', ' ')
@@ -125,6 +133,7 @@ def model(request, brand, model):
     return render(request, 'front/car.html', context)
 
 
+@login_required
 def about(request):
     return render(request, 'front/about.html')
 
@@ -159,3 +168,12 @@ def graps_JSON(brand, model):
     lables = json.dumps(lables)
     data_price = json.dumps(data_price)
     return lables, data_price
+
+
+def login(request):
+    return render(request, 'front/accounts/login.html')
+    # return HttpResponse("<p>Pidor nahyi idi otsuda Huli ti xotel?</p>")
+
+
+def test(request):
+    return HttpResponse('PIPISA')
