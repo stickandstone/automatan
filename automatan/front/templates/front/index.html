@@ -27,6 +27,10 @@
     </div>
     {% endfor %}
   </div>
-
+  {% if num_visits == 0 %}
+  <script>
+    alert('Привет! Это бета-версия автоматана для закрытого тестирования. На данный момент реализован только базовый функционал - график цен в зависимости от года.')
+  </script>
+  {%endif%}
   <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
   {% endblock content %}
