@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 import sqlite3
-from . import graps, slopes_calc
+# from . import graps, slopes_calc
 from django.http import HttpResponse
 # from front.forms import IndexForm
 from django import forms
