@@ -17,6 +17,9 @@
         var data_price = JSON.parse("{{js_price|escapejs}}")
         var name = "{{brand_name}}" + "{{model_name}}"
         var ctx = document.getElementById("myChart").getContext("2d");
+        console.log(data_price)
+        console.log(labels)
+
         var chart = new Chart(ctx, {
             // The type of chart we want to create
             type: "line",
@@ -31,6 +34,13 @@
                         borderColor: "rgb(255, 9, 13)",
                         data: data_price,
                     },
+                    {
+                        label: '2009',
+                        backgroundColor: "rgb(25, 99, 132)",
+                        borderColor: "rgb(25, 9, 13)",
+                        data: ['3000000', '3000000'],
+                    },
+
                 ],
             },
 
@@ -40,6 +50,8 @@
 
     </script>
     <a href="/{{brand_name}}" class="btn btn-outline-primary">Вернуться назад</a>
+    <a href="/" class="btn btn-outline-primary">Добавить к сравнению</a>
+
 </div>
 
 

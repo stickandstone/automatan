@@ -9,7 +9,7 @@ urlpatterns = [
     path('about/', views.about, name='front-about'),
     path('<str:brand>/', views.brand, name='front-brand'),
     path('<str:brand>/<str:model>', views.model, name='front-model'),
-    path('accounts/login/', views.login_view, name='front-login')
+    # path('users/login/', views.login_view, name='front-login')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # urlpatterns += [

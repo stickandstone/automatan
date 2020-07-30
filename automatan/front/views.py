@@ -8,10 +8,6 @@ from . import models
 import numpy as np
 import json
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import (authenticate,
-                                 login
-                                 )
-from .forms import UserLoginForm
 
 # Create your views here.
 
@@ -70,35 +66,33 @@ def brand(request, brand):
     query_list = models.CarNames.objects.filter(
         brand_name=brand_name_with_spaces, quantity__gt=10).order_by('model_name')
     # Извлечение первой буквы\цифры названия модели
-    check_letter = []
+    check_letter_list = []
     try:
-        check_letter.append(query_list[0].model_name[0])
+        first_letter = query_list[0].model_name[0]
+        check_letter_list.append(first_letter)
 
         for i in query_list:
 
             letter = i.model_name[0]
             model_name = i.model_name.replace('_', ' ')
             model_url = i.model_name.replace(' ', '_')
-            if letter not in check_letter:
-                previous_letter = check_letter[-1]
+            if letter not in check_letter_list:
+                previous_letter = check_letter_list[-1]
                 super_list.append(
                     {"letter": previous_letter, "models": models_list})
-                check_letter.append(letter)
+                check_letter_list.append(letter)
                 models_list = []
 
-            print(i.model_name)
             models_list.append(
                 {'name': model_name, 'url': model_url})
 
         # NOT DRY ENOUGH
         # Приходится повторятся, чтобы добавить модель на последнюю букву см issues #12
-        previous_letter = check_letter[-1]
+        previous_letter = check_letter_list[-1]
         super_list.append(
             {"letter": previous_letter, "models": models_list})
 
         brand_link = brand.replace(' ', '_')
-        # for i in super_list:
-        #     print(i)
 
         context = {
             'brand_name': brand_name_with_spaces,
@@ -107,7 +101,6 @@ def brand(request, brand):
         }
         return render(request, 'front/brand.html', context)
     except:
-        print('pizda')
         context = {
             "error": True
         }
@@ -169,24 +162,6 @@ def graps_JSON(brand, model):
     lables = json.dumps(lables)
     data_price = json.dumps(data_price)
     return lables, data_price
-
-
-def login_view(request):
-    next = request.GET.get('next')
-    form = UserLoginForm(request.POST or None)
-    if form.is_valid():
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        login(request, user)
-        if next:
-            return redirect(next)
-        return redirect('/')
-
-    context = {
-        'form': form,
-    }
-    return render(request, 'front/accounts/login.html', context)
 
 
 def test(request):
