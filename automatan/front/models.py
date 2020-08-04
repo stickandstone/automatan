@@ -16,8 +16,9 @@ class CarNames(models.Model):
         managed = False
         db_table = 'car_names'
 
-    # def __str__(self):
-    #     return self.model_name
+    # def query_list(self):
+    #     query_list_res = ob
+    #     return query_list_res
 
 
 class Cars(models.Model):
