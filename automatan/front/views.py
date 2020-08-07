@@ -29,6 +29,8 @@ def model(request, brand, model):
         'js_lables': js_lables,
         'js_price': js_price,
     }
+    test_but = request.POST.getlist('test_button')
+    print(test_but)
     return render(request, 'front/car.html', context)
 
 
