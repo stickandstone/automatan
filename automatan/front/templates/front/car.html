@@ -11,14 +11,16 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     <script>
-        // console.log('{{js_data|escapejs}}')
-        // var data = JSON.parse("{{js_data|escapejs}}")
         var labels = JSON.parse("{{js_lables|escapejs}}")
         var data_price = JSON.parse("{{js_price|escapejs}}")
         var name = "{{brand_name}}" + "{{model_name}}"
         var ctx = document.getElementById("myChart").getContext("2d");
-        console.log(data_price)
-        console.log(labels)
+        var dataFirst = {
+            label: name,
+            backgroundColor: "rgb(255, 99, 132)",
+            borderColor: "rgb(255, 9, 13)",
+            data: data_price,
+        }
 
         var chart = new Chart(ctx, {
             // The type of chart we want to create
@@ -28,12 +30,7 @@
                 labels: labels,
 
                 datasets: [
-                    {
-                        label: name,
-                        backgroundColor: "rgb(255, 99, 132)",
-                        borderColor: "rgb(255, 9, 13)",
-                        data: data_price,
-                    },
+                    dataFirst,
                     {
                         label: '2009',
                         backgroundColor: "rgb(25, 99, 132)",
@@ -50,7 +47,12 @@
 
     </script>
     <a href="/{{brand_name}}" class="btn btn-outline-primary">Вернуться назад</a>
-    <a href="/" class="btn btn-outline-primary">Добавить к сравнению</a>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="test_button" value="{{brand_name}} {{model_name}}"></input>
+        <input type="submit" class="btn btn-outline-primary"></input>
+        <!-- <button value="{{brand_name}} type="button" class="btn btn-outline-primary">Добавить к сравнению</button> -->
+    </form>
 
 </div>
 
