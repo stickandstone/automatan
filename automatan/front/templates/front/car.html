@@ -13,13 +13,39 @@
     <script>
         var labels = JSON.parse("{{js_lables|escapejs}}")
         var data_price = JSON.parse("{{js_price|escapejs}}")
-        var name = "{{brand_name}}" + "{{model_name}}"
+        var name = "{{brand_name}}" + ' ' + "{{model_name}}"
         var ctx = document.getElementById("myChart").getContext("2d");
         var dataFirst = {
             label: name,
             backgroundColor: "rgb(255, 99, 132)",
             borderColor: "rgb(255, 9, 13)",
             data: data_price,
+            order: 2,
+            // fill: 1,
+        }
+        var datasetList = [dataFirst]
+        console.log('dataset_list_First:', datasetList)
+
+
+
+        console.log("{{comparasing}}")
+        // datasetList.concat(',', dataFirst)
+        if ("{{comparasing}}" == "True") {
+            var labels2 = JSON.parse("{{js_lables2|escapejs}}")
+            var data_price2 = JSON.parse("{{js_price2|escapejs}}")
+            var name2 = "{{brand_name2}}" + ' ' + "{{model_name2}}"
+
+            var dataSecond = {
+                label: name2,
+                backgroundColor: "rgb(55, 99, 132)",
+                borderColor: "rgb(55, 9, 13)",
+                data: data_price2,
+                order: 0,
+
+            }
+            datasetList = datasetList.concat(dataSecond)
+
+            console.log('dataset_list_Second:', datasetList)
         }
 
         var chart = new Chart(ctx, {
@@ -29,16 +55,7 @@
             data: {
                 labels: labels,
 
-                datasets: [
-                    dataFirst,
-                    {
-                        label: '2009',
-                        backgroundColor: "rgb(25, 99, 132)",
-                        borderColor: "rgb(25, 9, 13)",
-                        data: ['3000000', '3000000'],
-                    },
-
-                ],
+                datasets: datasetList
             },
 
             // Configuration options go here
@@ -49,6 +66,7 @@
     <a href="/{{brand_name}}" class="btn btn-outline-primary">Вернуться назад</a>
     <form method="POST">
         {% csrf_token %}
+        <input type="checkbox" name="check_first" value="{{True}}"></input>
         <input type="hidden" name="test_button" value="{{brand_name}} {{model_name}}"></input>
         <input type="submit" class="btn btn-outline-primary"></input>
         <!-- <button value="{{brand_name}} type="button" class="btn btn-outline-primary">Добавить к сравнению</button> -->

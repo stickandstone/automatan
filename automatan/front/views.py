@@ -22,15 +22,35 @@ def brand(request, brand):
 def model(request, brand, model):
     brand = brand.replace('_', ' ')
     model = model.replace('_', ' ')
+    check = False
     js_lables, js_price = graphs_JSON.make_json_data(brand, model)
     context = {
         'brand_name': brand,
         'model_name': model,
         'js_lables': js_lables,
         'js_price': js_price,
+        'comparasing': check,
     }
-    test_but = request.POST.getlist('test_button')
-    print(test_but)
+    check_fist = request.POST.getlist('check_first')
+    if check_fist:
+        check = True
+
+        print("CHECK_FIRST")
+        brand2 = 'Acura'
+        model2 = 'MDX'
+        js_lables2, js_price2 = graphs_JSON.make_json_data(brand2, model2)
+        context2 = {
+            'brand_name2': brand2,
+            'model_name2': model2,
+            'js_lables2': js_lables2,
+            'js_price2': js_price2,
+            'comparasing': check,
+        }
+        test_but = request.POST.getlist('test_button')
+        context.update(context2)
+        print(context)
+        return render(request, 'front/car.html', context)
+
     return render(request, 'front/car.html', context)
 
 
