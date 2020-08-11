@@ -23,10 +23,10 @@
             order: 2,
         }
         var datasetList = [dataFirst]
-        console.log("{{ comparasing }}")
+        console.log("{{ ses_var }}")
 
-        if ("{{ses_var}}" != 'None') {
-            console.log("{{ comparasing }}")
+        if ("{{ses_var}}" != "None") {
+            console.log("{{ ses_var }}")
             var labels2 = JSON.parse("{{js_lables2|escapejs}}")
             var data_price2 = JSON.parse("{{js_price2|escapejs}}")
             var name2 = "{{brand_name2}}" + ' ' + "{{model_name2}}"
@@ -62,13 +62,14 @@
     <a href="/{{brand_name}}" class="btn btn-outline-primary">Вернуться назад</a>
     <form method="POST">
         {% csrf_token %}
-        <input type="hidden" name="comparasing" value="{{brand_name}} {{model_name}}"></input>
-        <input type="submit" class="btn btn-outline-primary" value="Добавить к сравнению"></input>
         {% if can_delete %}
-        <input type="hidden" name="comparasing" value="{{brand_name}} {{model_name}}"></input>
-        <input type="submit" class="btn btn-outline-danger" value="Удалить из сраниня"></input>
+        <p>pidor</p>
+        <input type="hidden" name="delete_comparasing" value="{{brand_name}} {{model_name}}"></input>
+        <input type="submit" class="btn btn-outline-danger" value="Удалить из сравнения"></input>
+        {% else %}
+        <input type="hidden" name="session_var" value="{{brand_name}} {{model_name}}"></input>
+        <input type="submit" class="btn btn-outline-primary" value="Добавить к сравнению"></input>
         {% endif %}
-
     </form>
     <p>Пидропупель! {{ses_var}}</p>
 </div>

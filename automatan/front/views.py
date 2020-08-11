@@ -39,7 +39,7 @@ def model(request, brand, model):
     }
 
     if session_var != None:
-        print('SESVAR:', session_var)
+        print('SESVAR:', session_var[0])
         print('SESVAR:', session_var.split(' ')[0])
         print('SESVAR:', session_var.split(' ')[1])
 
@@ -58,7 +58,7 @@ def model(request, brand, model):
         context.update(context2)
         # return render(request, 'front/car.html', context)
 
-    carname_compar = request.POST.getlist('comparasing')
+    carname_compar = request.POST.getlist('session_var')
     if carname_compar != []:
         request.session['session_var'] = carname_compar[0]
         messages.success(
