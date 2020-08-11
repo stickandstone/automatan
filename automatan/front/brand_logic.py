@@ -2,6 +2,7 @@ from . import models
 
 
 def get_context(brand):
+    '''Генерирует список машин по заданному бренду'''
     models_list = []
     super_list = []
     brand_name_with_spaces = brand.replace('_', ' ')
