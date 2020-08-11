@@ -28,7 +28,6 @@ def model(request, brand, model):
     model = model.replace('_', ' ')
     # check = False
     # carname_compar = 'empty'
-    carname_compar = session_var
 
     js_lables, js_price = graphs_JSON.make_json_data(brand, model)
     context = {
@@ -37,7 +36,6 @@ def model(request, brand, model):
         'model_name': model,
         'js_lables': js_lables,
         'js_price': js_price,
-        'comparasing': carname_compar,
     }
 
     if session_var != None:
@@ -54,7 +52,6 @@ def model(request, brand, model):
             'model_name2': model2,
             'js_lables2': js_lables2,
             'js_price2': js_price2,
-            'comparasing': carname_compar,
             'ses_var': session_var,
             'can_delete': can_delete,
         }
