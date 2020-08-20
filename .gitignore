@@ -1,0 +1,5 @@
+/.vscode/
+automatan_env/
+.DS_Store
+automatan/front/__pycache__/
+/automatan/MyData.db
