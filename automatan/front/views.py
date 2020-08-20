@@ -75,10 +75,11 @@ def model(request, brand, model):
             request, f'{carname_compar[0]} добавлена для сравнения!'
             ' Выберете машину из списка с которой хотите сравнить')
         return redirect('front-index')
+
     elif carname_compar == ['[]']:
         request.session['session_var'] = None
         session_var = None
-        messages.warning(request, "Модель для сравнения удалена.")
+        messages.warning(request, "Модель сравнения удалена.")
         can_delete = False
         context = {
             'ses_var': session_var,
@@ -97,17 +98,3 @@ def model(request, brand, model):
 @login_required
 def about(request):
     return render(request, 'front/about.html')
-
-
-'''
-че хочу сделать? Нужно создать новый темплейт для сравнения? Как тогда это будет выглядеть?
-Я захожу в основной темплейт.
-Выбираю марку.
-Выбираю модель.
-Нажимаю кнопку сравнения.
-Попадаю на главную.
-Повторяю процесс.
-Попадаю на страницу сравнения. brand/name/graph-car -> comparasing/brand/name/graph-car1-car2
-
-
-'''
