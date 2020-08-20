@@ -29,10 +29,8 @@ class Cars(models.Model):
     year = models.IntegerField(blank=True, null=True)
     location = models.TextField(blank=True, null=True)
     price = models.IntegerField(blank=True, null=True)
-    # Field renamed to remove unsuitable characters.
     engine_power = models.TextField(
         db_column='engine power', blank=True, null=True)
-    # Field renamed to remove unsuitable characters.
     fuel_type = models.TextField(db_column='fuel type', blank=True, null=True)
     gearbox = models.TextField(blank=True, null=True)
     transmission = models.TextField(blank=True, null=True)
@@ -57,12 +55,3 @@ class Manufactories(models.Model):
 
     def __str__(self):
         return self.company_name
-
-    def get_list_ofLetters(self, company_name):
-
-        list_ofLetters = []
-        for i in company_name:
-            i = str(i)
-            if i[0] not in list_ofLetters:
-                list_ofLetters.append(i[0])
-        return list_ofLetters

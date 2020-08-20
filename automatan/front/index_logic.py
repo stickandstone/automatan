@@ -21,17 +21,13 @@ def get_context(num_visits):
 
         # добавляем заглавную букву для навигации
         if letter not in check_letter:
-            # print(letter, i)
-            previous_letter = check_letter[-1]
-            super_list.append({"letter": previous_letter, "brands": brands})
+            # check_letter[-1] - это предыдущая буква
+            super_list.append({"letter": check_letter[-1], "brands": brands})
             check_letter.append(letter)
             brands = []
 
         brands.append({'name': i, 'link': url})
-    # NOT DRY ENOUGH
-    # Приходится повторятся, чтобы добавить модель на последнюю букву см issues #12
-    previous_letter = check_letter[-1]
-    super_list.append({"letter": previous_letter, "brands": brands})
+    super_list.append({"letter": check_letter[-1], "brands": brands})
 
     context = {
         'brands': super_list,

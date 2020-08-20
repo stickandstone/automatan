@@ -63,15 +63,14 @@
     <form method="POST">
         {% csrf_token %}
         {% if can_delete %}
-        <p>pidor</p>
-        <input type="hidden" name="delete_comparasing" value="{{brand_name}} {{model_name}}"></input>
+        <input type="hidden" name="session_var" value={{go_none}}></input>
         <input type="submit" class="btn btn-outline-danger" value="Удалить из сравнения"></input>
         {% else %}
         <input type="hidden" name="session_var" value="{{brand_name}} {{model_name}}"></input>
         <input type="submit" class="btn btn-outline-primary" value="Добавить к сравнению"></input>
         {% endif %}
     </form>
-    <p>Пидропупель! {{ses_var}}</p>
+    <p>Сохраненная модель для сравнения: {{ses_var}}</p>
 </div>
 
 
