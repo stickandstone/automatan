@@ -2,15 +2,15 @@ from django.db import models
 
 
 class CarNames(models.Model):
-    id = models.TextField(db_column='Id', blank=True,
-                          primary_key=True)
+    # id = models.TextField(db_column='Id', blank=True,
+    #                       primary_key=True)
     brand_name = models.TextField(
-        db_column='Brand_name', blank=True, null=True)
+        db_column='brand_name', blank=True, null=True)
     model_link = models.TextField(
-        db_column='Model_Link', blank=True, null=True)
+        db_column='model_link', blank=True, null=True)
     model_name = models.CharField(
-        db_column='Model_name', blank=True, null=False, max_length=30)
-    quantity = models.IntegerField(db_column='Quantity', blank=True, null=True)
+        db_column='model_name', blank=True, null=False, max_length=30)
+    quantity = models.IntegerField(db_column='quantity', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -22,23 +22,28 @@ class CarNames(models.Model):
 
 
 class Cars(models.Model):
-    id = models.IntegerField(unique=True, blank=True,
+    id = models.IntegerField(db_column='car_id', unique=True, blank=True,
                              null=False, primary_key=True)
-    brand = models.TextField(blank=True, null=True)
-    model = models.TextField(blank=True, null=True)
+    brand = models.TextField(db_column='brand', blank=True, null=True)
+    model = models.TextField(db_column='model', blank=True, null=True)
     year = models.IntegerField(blank=True, null=True)
     location = models.TextField(blank=True, null=True)
     price = models.IntegerField(blank=True, null=True)
-    engine_power = models.TextField(
-        db_column='engine power', blank=True, null=True)
-    fuel_type = models.TextField(db_column='fuel type', blank=True, null=True)
-    gearbox = models.TextField(blank=True, null=True)
-    transmission = models.TextField(blank=True, null=True)
-    milage = models.TextField(blank=True, null=True)
+    discripton = models.TextField(blank=True, null=True)
+    posting_date = models.TextField(blank=True, null=True)
+    add_to_db_date = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'cars'
+
+
+# car_id = models.IntegerField(unique=True, blank=True, null=True)
+#     brand = models.TextField(blank=True, null=True)
+#     model = models.TextField(blank=True, null=True)
+#     year = models.IntegerField(blank=True, null=True)
+#     location = models.TextField(blank=True, null=True)
+#     price = models.IntegerField(blank=True, null=True)
 
     # def __str__(self):
     #     return self.cars

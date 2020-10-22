@@ -88,12 +88,25 @@ WSGI_APPLICATION = 'automatan.wsgi.application'
 #     }}
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'MyData.db'),
+#     }}
+secret = open("secret.txt", "r").read().split(',')
+sec_user = secret[0]
+sec_passwd = secret[1]
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'MyData.db'),
-    }}
-
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'automadb',
+        'USER': sec_user,
+        'PASSWORD': sec_passwd,
+        'HOST': '82.146.34.253',
+        'PORT': '5432',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

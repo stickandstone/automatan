@@ -8,6 +8,7 @@ def get_context(brand):
     brand_name_with_spaces = brand.replace('_', ' ')
     query_list = models.CarNames.objects.filter(
         brand_name=brand_name_with_spaces, quantity__gt=10).order_by('model_name')
+    print(query_list)
     # Извлечение первой буквы\цифры названия модели
     check_letter_list = []
     try:
