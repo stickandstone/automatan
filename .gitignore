@@ -1,4 +1,5 @@
 /.vscode/
+venv/
 automatan_env/
 .DS_Store
 automatan/front/__pycache__/
