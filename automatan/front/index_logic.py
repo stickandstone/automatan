@@ -2,7 +2,8 @@ from . import models
 
 
 def get_context(num_visits):
-    brands_list = list(models.Manufactories.objects.all())
+    brands_list = list(
+        models.Manufactories.objects.all().filter())
 
     brands = []
     check_letter = []
