@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import json
+
+
+with open('/etc/config_automatan.json') as conf_file:
+    conf = json.load(conf_file)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +25,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'sr)6ph1a(6^l(2-kd6s=gbz7+*ls)fei#$q78r-$djar!bxt$w'
+SECRET_KEY = conf['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['82.146.34.253', 'automatan.ru']
 
 
 # Application definition
@@ -93,16 +98,16 @@ WSGI_APPLICATION = 'automatan.wsgi.application'
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'MyData.db'),
 #     }}
-secret = open("secret.txt", "r").read().split(',')
-sec_user = secret[0]
-sec_passwd = secret[1]
+#secret = open("secret.txt", "r").read().split(',')
+#sec_user = secret[0]
+#sec_passwd = secret[1]
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'automadb',
-        'USER': sec_user,
-        'PASSWORD': sec_passwd,
+        'USER': conf['BASE_USER'],
+        'PASSWORD': conf['BASE_PASS'],
         'HOST': '82.146.34.253',
         'PORT': '5432',
     }
