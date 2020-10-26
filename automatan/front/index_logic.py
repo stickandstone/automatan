@@ -2,6 +2,10 @@ from . import models
 
 
 def get_context(num_visits):
+    '''
+    Собирает все бренды из базы, созадает список с заглавными буквами
+    и отправляет их в виде контекста для вьюшки.
+    '''
     brands_list = list(
         models.Manufactories.objects.all().filter())
 

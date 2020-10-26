@@ -11,6 +11,7 @@ urlpatterns = [
     path('about/', views.about, name='front-about'),
     path('<str:brand>/', views.brand, name='front-brand'),
     path('<str:brand>/<str:model>', views.model, name='front-model'),
+    path('<str:brand>/<str:model>/year/', views.year, name='year-select-page'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # urlpatterns += [

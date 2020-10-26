@@ -1,6 +1,9 @@
 import numpy as np
 import json
 from . import models
+'''
+Нужно добавить страницу выбора по годам. Как это лучше сделать? 
+'''
 
 
 def make_json_data(brand, model):

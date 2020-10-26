@@ -1,21 +1,27 @@
+from django.http import request
 from django.shortcuts import render, redirect
-from . import models, index_logic, brand_logic, graphs_JSON
+from . import models, index_logic, brand_logic, graphs_JSON, years_logic
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import ListView
 from .models import Manufactories
 from django.contrib.auth.mixins import LoginRequiredMixin
+"""You know what? Maby it is not such a bad way to write the code. Maby you need just live some time with this keyboard?"""
 
 
 class TestList(LoginRequiredMixin, ListView):
     model = Manufactories
 
     def get_context_data(self, **kwargs):
-        num_visits = 0
-        context = super(TestList, self).get_context_data(**kwargs)
+        num_visits = 1
+        # context = super(TestList, self).get_context_data(**kwargs)
         context = index_logic.get_context(num_visits)
-        print(context)
+        # print(context)
         return context
+
+# class BrandList(LoginRequiredMixin, ListView):
+#     def suka_kak_tebya_nazvat(brand):
+#         context = brand_logic.get_context(brand)
 
 
 @login_required
@@ -31,6 +37,13 @@ def index(request):
 def brand(request, brand):
     context = brand_logic.get_context(brand)
     return render(request, 'front/brand.html', context)
+
+
+def year(request, brand, model):
+    all_years = years_logic.get_all_years(brand, model)
+
+    context = {'brand': brand, 'model': model, 'years': all_years}
+    return render(request, 'front/year.html', context)
 
 
 @login_required
