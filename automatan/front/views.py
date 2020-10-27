@@ -1,12 +1,11 @@
 from django.http import request
 from django.shortcuts import render, redirect
-from . import models, index_logic, brand_logic, graphs_JSON, years_logic
+from . import models, index_logic, brand_logic, graphs_JSON, years_logic, models_logic
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import ListView
 from .models import Manufactories
 from django.contrib.auth.mixins import LoginRequiredMixin
-"""You know what? Maby it is not such a bad way to write the code. Maby you need just live some time with this keyboard?"""
 
 
 class TestList(LoginRequiredMixin, ListView):
@@ -46,14 +45,22 @@ def year(request, brand, model):
     return render(request, 'front/year.html', context)
 
 
+def model_a(request, brand, model):
+    context = brand_logic.get_context(brand)
+    return render(request, 'front/year.html', context)
+
+
 @login_required
-def model(request, brand, model):
+def model(request, brand, model, year):
+    print(year)
     session_var = request.session.get('session_var')
     brand = brand.replace('_', ' ')
     model = model.replace('_', ' ')
     go_none = []
 
-    js_lables, js_price = graphs_JSON.make_json_data(brand, model)
+    # js_lables, js_price = graphs_JSON.make_json_data(brand, model)
+    js_lables, js_price = graphs_JSON.make_json_data_years(brand, model, year)
+
     context = {
         'ses_var': session_var,
         'brand_name': brand,

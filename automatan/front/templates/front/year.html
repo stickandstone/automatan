@@ -1,0 +1,38 @@
+{% extends 'front/base.html' %}
+{% block content %}
+{% comment %} <div class='container'>
+    <p>Privet uebok!</p>
+    <p>{{brand}}</p>
+    <p>{{model}}</p>
+    {% for year in years%}
+        <a href=/{{brand}}/{{model}}/{{year}} class="card-link">{{year}}</a>
+    {% endfor %}
+    
+</div> {% endcomment %}
+
+
+
+</div>
+<div class="container-xl">
+    <h5 style=" padding-left: 2.2rem; border-bottom: 2px; border-bottom-style: solid; border-bottom-color: #c5ede0;
+    padding-bottom: 0.6rem;">
+        {{brand}} {{model}}</h5>
+    <div class="container-xl">
+        <div class="row">
+            {% for year in years%}
+            <div class="col">
+                <div class="{% cycle 'col' 'col' 'col' 'col' 'col' 'row' %}">
+                </div>
+                <div class="card border-white" style="width: 6rem; margin-bottom: 2rem;">
+                    <div class="card-body">
+                        <div>
+                            <a href=/{{brand}}/{{model}}/{{year}} class="card-link">{{year}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="/" class="btn btn-outline-primary">Вернуться назад</a>
+    </div>
+{% endblock content %}

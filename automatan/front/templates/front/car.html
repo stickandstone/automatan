@@ -5,7 +5,7 @@
 {% load static %}
 <div class="container">
 
-    <h5>График падения цены {{brand_name}} {{model_name}}</h5>
+    <h5>График падения цены {{brand_name}} {{model_name}} {{year}}</h5>
 
 
     <canvas id="myChart"></canvas>
@@ -72,10 +72,8 @@
                     {% csrf_token %}
                     {% if can_delete %}
                     <input type="hidden" name="session_var" value={{go_none}}></input>
-                    <input type="submit" class="btn btn-outline-danger" value="Удалить из сравнения"></input>
+                    <input type="submit" class="btn btn-outline-danger" value="❌ {{ses_var}}"></input>
                     <div class="col-sm">
-
-                        <p>Сохраненная модель для сравнения: {{ses_var}}</p>
                     </div>
 
                     {% else %}

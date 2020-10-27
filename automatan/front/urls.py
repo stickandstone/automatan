@@ -10,8 +10,9 @@ urlpatterns = [
     path('', views.index, name='front-index'),
     path('about/', views.about, name='front-about'),
     path('<str:brand>/', views.brand, name='front-brand'),
-    path('<str:brand>/<str:model>', views.model, name='front-model'),
-    path('<str:brand>/<str:model>/year/', views.year, name='year-select-page'),
+    path('<str:brand>/<str:model>', views.year, name='front-year-page'),
+    path('<str:brand>/<str:model>/<str:year>/',
+         views.model, name='front-model'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # urlpatterns += [
