@@ -23,7 +23,7 @@ class TestList(LoginRequiredMixin, ListView):
 #         context = brand_logic.get_context(brand)
 
 
-@login_required
+# @login_required
 def index(request):
     # Number of visits to this view, as counted in the session variable.
     num_visits = request.session.get('num_visits', 0)
@@ -32,7 +32,7 @@ def index(request):
     return render(request, 'front/index.html', context)
 
 
-@login_required
+# @login_required
 def brand(request, brand):
     context = brand_logic.get_context(brand)
     return render(request, 'front/brand.html', context)
@@ -49,7 +49,7 @@ def year(request, brand, model):
 #     return render(request, 'front/year.html', context)
 
 
-@login_required
+# @login_required
 def model(request, brand, model, year):
     session_var = request.session.get('session_var')
     brand = brand.replace('_', ' ')
@@ -117,6 +117,6 @@ def model(request, brand, model, year):
         return render(request, 'front/car.html', context)
 
 
-@login_required
+# @login_required
 def about(request):
     return render(request, 'front/about.html')
