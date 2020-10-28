@@ -67,7 +67,7 @@
             </div>
             <div class="col-sm">
 
-                <form method="POST">
+                {% comment %} <form method="POST">
                     {% csrf_token %}
                     {% if can_delete %}
                     <input type="hidden" name="session_var" value={{go_none}}></input>
@@ -79,7 +79,7 @@
                     <input type="hidden" name="session_var" value="{{brand_name}} {{model_name}}"></input>
                     <input type="submit" class="btn btn-outline-primary" value="Добавить к сравнению"></input>
                     {% endif %}
-                </form>
+                </form> {% endcomment %}
 
             </div>
 
