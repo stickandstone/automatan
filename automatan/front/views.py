@@ -1,6 +1,6 @@
 from django.http import request
 from django.shortcuts import render, redirect
-from . import models, index_logic, brand_logic, graphs_JSON, years_logic
+from . import models, index_logic, brand_logic, model_logic, years_logic
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import ListView
@@ -51,14 +51,13 @@ def year(request, brand, model):
 
 @login_required
 def model(request, brand, model, year):
-    print(year)
     session_var = request.session.get('session_var')
     brand = brand.replace('_', ' ')
     model = model.replace('_', ' ')
     go_none = []
 
     # js_lables, js_price = graphs_JSON.make_json_data(brand, model)
-    js_lables, js_price = graphs_JSON.make_json_data_years(brand, model, year)
+    js_lables, js_price = model_logic.make_json_data_years(brand, model, year)
 
     context = {
         'year': year,
@@ -71,12 +70,15 @@ def model(request, brand, model, year):
     }
 
     if session_var != None and session_var != '[]':
-
+        print('Sesseion var: ', session_var)
         brand2 = session_var.split(' ')[0]
         model2 = session_var.split(' ')[1]
-        js_lables2, js_price2 = graphs_JSON.make_json_data(brand2, model2)
+        year2 = session_var.split(' ')[2]
+        js_lables2, js_price2 = model_logic.make_json_data_years(
+            brand2, model2, year2)
         can_delete = True
         context2 = {
+            'year2': year2,
             'brand_name2': brand2,
             'model_name2': model2,
             'js_lables2': js_lables2,
