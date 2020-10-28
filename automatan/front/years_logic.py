@@ -2,6 +2,8 @@ from . import models
 
 
 def get_all_years(brand, model):
+    brand = brand.replace('_', ' ')
+    model = model.replace('_', ' ')
     query_list = models.Cars.objects.filter(
         brand=brand, model=model
     ).order_by('-year').values_list('year')

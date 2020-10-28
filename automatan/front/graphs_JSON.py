@@ -9,7 +9,7 @@ from . import models
 
 
 def make_json_data(brand, model):
-    '''Создает джейсон для построения графика год:цена'''
+    '''Создает джейсон для построения графика год:цена, вариант для каталога'''
     lables = []
 
     selected_cars = models.Cars.objects.filter(
@@ -41,14 +41,13 @@ def make_json_data(brand, model):
 
 
 def make_json_data_years(brand, model, year):
-    '''Создает джейсон для построения графика потерии стоимости, 
+    '''Создает джейсон для построения графика ПОТЕРИИ СТОИМОСТИ, 
     где начальным отсчетом считается переданный год'''
     current_year = datetime.date.today().year
     lables = [current_year + i for i in range(11)]
-    # selected_cars = models.Cars.objects.filter(
-    #     brand=brand, model=model).exclude(year=year).order_by('-year')
     selected_cars = models.Cars.objects.filter(
         brand=brand, model=model, year__lte=year)
+
     print(len(selected_cars))
     price_in_point = []
     for point in range(11):
@@ -69,26 +68,3 @@ def make_json_data_years(brand, model, year):
     lables = json.dumps(lables)
     data_price = json.dumps(price_in_point)
     return lables, data_price
-    # price_for_specific_year = []
-    # # lables = []
-    # data_price = []
-    # try:
-    #     handled_year = selected_cars[0].year
-    # except:
-    #     handled_year = '2020'
-
-    # for i in selected_cars:
-    #     if handled_year == i.year:
-    #         price_for_specific_year.append(i.price)
-    #     else:
-    #         # lables.append(str(handled_year))
-    #         data_price.append(int(np.median(price_for_specific_year)))
-    #         price_for_specific_year = []
-    #         handled_year = i.year
-    #         price_for_specific_year.append(i.price)
-    # # lables.append(str(handled_year))
-    # data_price.append(int(np.median(price_for_specific_year)))
-
-    # lables = json.dumps(lables)
-    # data_price = json.dumps(data_price)
-    # return lables, data_price

@@ -1,11 +1,10 @@
 {% extends 'front/base.html' %}
 
 {% block content %}
-<a href=/{{brand_name}}/{{model_name}}/year>go to the year</a>
 {% load static %}
 <div class="container">
 
-    <h5>График падения цены {{brand_name}} {{model_name}} {{year}}</h5>
+    <h5>График падения цены {{brand_name}} {{model_name}} {{year}} года</h5>
 
 
     <canvas id="myChart"></canvas>
@@ -14,7 +13,7 @@
     <script>
         var labels = JSON.parse("{{js_lables|escapejs}}")
         var data_price = JSON.parse("{{js_price|escapejs}}")
-        var name = "{{brand_name}}" + ' ' + "{{model_name}}"
+        var name = "{{brand_name}}" + ' ' + "{{model_name}}" + ' ' + "{{year}}" + ' ' +'года'
         var ctx = document.getElementById("myChart").getContext("2d");
         var dataFirst = {
             label: name,

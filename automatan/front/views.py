@@ -1,6 +1,6 @@
 from django.http import request
 from django.shortcuts import render, redirect
-from . import models, index_logic, brand_logic, graphs_JSON, years_logic, models_logic
+from . import models, index_logic, brand_logic, graphs_JSON, years_logic
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import ListView
@@ -40,14 +40,13 @@ def brand(request, brand):
 
 def year(request, brand, model):
     all_years = years_logic.get_all_years(brand, model)
-
     context = {'brand': brand, 'model': model, 'years': all_years}
     return render(request, 'front/year.html', context)
 
 
-def model_a(request, brand, model):
-    context = brand_logic.get_context(brand)
-    return render(request, 'front/year.html', context)
+# def model_a(request, brand, model):
+#     context = brand_logic.get_context(brand)
+#     return render(request, 'front/year.html', context)
 
 
 @login_required
@@ -62,6 +61,7 @@ def model(request, brand, model, year):
     js_lables, js_price = graphs_JSON.make_json_data_years(brand, model, year)
 
     context = {
+        'year': year,
         'ses_var': session_var,
         'brand_name': brand,
         'model_name': model,
