@@ -51,70 +51,85 @@ def year(request, brand, model):
 
 # @login_required
 def model(request, brand, model, year):
-    session_var = request.session.get('session_var')
     brand = brand.replace('_', ' ')
     model = model.replace('_', ' ')
-    go_none = []
+    pre_context = request.session.get('prev_context', None)
+    is_compar = request.session.get('compar', False)
+    print('PRRRE: ', pre_context)
+    print('Is?:', is_compar)
 
-    # js_lables, js_price = graphs_JSON.make_json_data(brand, model)
-    js_lables, js_price = model_logic.make_json_data_years(brand, model, year)
-
-    context = {
-        'year': year,
-        'ses_var': session_var,
-        'brand_name': brand,
-        'model_name': model,
-        'js_lables': js_lables,
-        'js_price': js_price,
-        'go_none': go_none,
-    }
-
-    if session_var != None and session_var != '[]':
-        print('Sesseion var: ', session_var)
-        brand2 = session_var.split(' ')[0]
-        model2 = session_var.split(' ')[1]
-        year2 = session_var.split(' ')[2]
-        js_lables2, js_price2 = model_logic.make_json_data_years(
-            brand2, model2, year2)
-        can_delete = True
-        context2 = {
-            'year2': year2,
-            'brand_name2': brand2,
-            'model_name2': model2,
-            'js_lables2': js_lables2,
-            'js_price2': js_price2,
-            'ses_var': session_var,
-            'can_delete': can_delete,
-            'go_none': go_none,
-
-        }
-        context.update(context2)
+    context = model_logic.get_context(brand, model, year)
 
     carname_compar = request.POST.getlist('session_var')
-    if carname_compar != [] and carname_compar != ['[]']:
-        request.session['session_var'] = carname_compar[0]
+    compar = request.POST.get('compar')
+    print(f'start def model. {carname_compar}')
+    if compar:
+        request.session['compar'] = True
+        request.session['pre_context'] = context
         messages.success(
-            request, f'{carname_compar[0]} добавлена для сравнения!'
+            request, f'{carname_compar[0]} года добавлена для сравнения!'
             ' Выберете машину из списка с которой хотите сравнить')
-        return redirect('front-index')
+        # return redirect('front-index')
 
-    elif carname_compar == ['[]']:
-        request.session['session_var'] = None
-        session_var = None
-        messages.warning(request, "Модель сравнения удалена.")
-        can_delete = False
-        context = {
-            'ses_var': session_var,
-            'brand_name': brand,
-            'model_name': model,
-            'js_lables': js_lables,
-            'js_price': js_price,
-            'go_none': go_none,
-            'can_delete': can_delete,
-        }
-        return render(request, 'front/car.html', context)
-    else:
-        return render(request, 'front/car.html', context)
+    return render(request, 'front/car.html', context)
+#####################################################
+
+    # context = {
+    #     'year': year,
+    #     'ses_var': session_var,
+    #     'brand_name': brand,
+    #     'model_name': model,
+    #     'js_lables': js_lables,
+    #     'js_price': js_price,
+    #     'go_none': go_none,
+    # }
+
+    # if session_var != None and session_var != '[]':
+    #     print('Sesseion var: ', session_var)
+    #     brand2 = session_var.split(' ')[0]
+    #     model2 = session_var.split(' ')[1]
+    #     year2 = session_var.split(' ')[2]
+    #     js_lables2, js_price2 = model_logic.make_json_data_years(
+    #         brand2, model2, year2)
+    #     # can_delete = True
+    #     context2 = {
+    #         'year2': year2,
+    #         'brand_name2': brand2,
+    #         'model_name2': model2,
+    #         'js_lables2': js_lables2,
+    #         'js_price2': js_price2,
+    #         'ses_var': session_var,
+    #         'can_delete': True,
+    #         'go_none': go_none,
+
+    #     }
+    #     context.update(context2)
+
+    # carname_compar = request.POST.getlist('session_var')
+    # if carname_compar != [] and carname_compar != ['[]']:
+    #     request.session['session_var'] = carname_compar[0]
+    #     messages.success(
+    #         request, f'{carname_compar[0]} добавлена для сравнения!'
+    #         ' Выберете машину из списка с которой хотите сравнить')
+    #     return redirect('front-index')
+
+    # elif carname_compar == ['[]']:
+    #     request.session['session_var'] = None
+    #     session_var = None
+    #     messages.warning(request, "Модель сравнения удалена.")
+    #     can_delete = False
+    #     context = {
+    #         'ses_var': session_var,
+    #         'brand_name': brand,
+    #         'model_name': model,
+    #         'js_lables': js_lables,
+    #         'js_price': js_price,
+    #         'go_none': go_none,
+    #         'can_delete': can_delete,
+    #     }
+    #     return render(request, 'front/car.html', context)
+    # else:
+    #     return render(request, 'front/car.html', context)
 
 
 # @login_required

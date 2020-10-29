@@ -38,7 +38,7 @@ def make_json_data(brand, model):
 
 def make_json_data_years(brand, model, year):
     '''Создает джейсон для построения графика ПОТЕРИИ СТОИМОСТИ, 
-    где начальным отсчетом считается переданный год'''
+    где началом координат по оси абцисс считается переданный год'''
     current_year = datetime.date.today().year
     lables = [current_year + i for i in range(11)]
     selected_cars = models.Cars.objects.filter(
@@ -56,11 +56,35 @@ def make_json_data_years(brand, model, year):
             # Рассчет недостающих точек на графике
             # Когда в базе нет таких данных
             # Например не существует киа рио 1998 года выпуска
+            # Решение плохое, требует проработки (может уйти в отрицательную стоимость)
+            # слишком линейно показывает падения для совсем новых машин возрастом 2 года
+            # ПАДАЕТ когда марка первогодка
             a = price_in_point[-2]
             b = price_in_point[-1]
-            c = b-(a-b)
+            # 0.75 просто сгругляшка временная
+            c = b-((a-b)*0.75)
             price_in_point.append(c)
 
     lables = json.dumps(lables)
     data_price = json.dumps(price_in_point)
     return lables, data_price
+
+
+"""
+Размышления как действовать.
+
+Нужно передать в темплейт список контекстов, а в самом темплейте итерироваться по ним.
+
+"""
+
+
+def get_context(brand, model, year):
+    js_lables, js_price = make_json_data_years(brand, model, year)
+    context = {
+        'year': year,
+        'brand_name': brand,
+        'model_name': model,
+        'js_lables': js_lables,
+        'js_price': js_price,
+    }
+    return context
