@@ -2,6 +2,16 @@
 <html lang="ru">
 
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXL9DS0H7S"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HXL9DS0H7S');
+    </script>
+
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -11,24 +21,27 @@
 </head>
 
 <body>
-    <!-- <div class="container"> -->
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'front-index' %}">🚙Automatan</a>
-        <form class="form-inline" method="POST">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'front-index' %}"><span>🚙Automatan</span><span style='color:green' class="font-italic"> beta</span></a>
+        {% comment %} <form class="form-inline" method="POST">
             <input class="form-control mr-sm-2" type="search" placeholder="Введите марку и модель" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
-        </form>
+        </form> {% endcomment %}
+    </div>
     </nav>
     {% if messages %}
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{message}}
+    <div class='container'>
+        <div class="alert alert-{{ message.tags }}">
+            {{message}}
+        </div>
     </div>
+
     {% endfor %}
     {% endif %}
     {% block content%}{% endblock%}
-
-
+    
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
