@@ -25,7 +25,14 @@ class TestList(LoginRequiredMixin, ListView):
 
 # @login_required
 def index(request):
-    # Number of visits to this view, as counted in the session variable.
+    request.session.set_test_cookie()
+    if request.session.test_cookie_worked():
+        request.session.delete_test_cookie()
+    else:
+        # request.session.set_test_cookie()
+        messages.error(
+            request, 'Для правильной работы сайта требуются включенные coockies.')
+
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits+1
     context = index_logic.get_context(num_visits)
@@ -57,8 +64,10 @@ def model(request, brand, model, year):
     is_compar = request.session.get('compar', False)
     print('PRRRE: ', pre_context)
     print('Is?:', is_compar)
-
-    context = model_logic.get_context(brand, model, year)
+    context = model_logic.Grap(brand, model, year).get_context()
+    # print(a.get_context())
+    # context = model_logic.Grap.get_context(brand, model, year)
+    # context = model_logic.get_context(brand, model, year)
 
     carname_compar = request.POST.getlist('session_var')
     compar = request.POST.get('compar')
