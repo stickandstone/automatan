@@ -117,6 +117,8 @@ class Grap:
         selected_cars = models.Cars.objects.filter(
             brand=self.brand, model=self.model, year__lte=self.year)
         price_in_point = []
+        print("selected_cars")
+        print(selected_cars[:2])
         for point in range(11):
             year_for_query_in_point = int(self.year) - point
             # FIX ME SLOW QUERY FIX ME #
