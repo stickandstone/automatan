@@ -34,7 +34,13 @@ def make_json_data(brand, model):
 
     lables = json.dumps(lables)
     data_price = json.dumps(data_price)
-    return lables, data_price
+    temp_var_for_test = json.dumps(f"""{
+            'label': {name},
+            'backgroundColor': 'rgba(255, 99, 132, 0.5)',
+            'borderColor': 'rgba(255, 9, 13, 0.8)',
+            'data': {data_price},
+            'order': '2',}""")
+    return lables, data_price, temp_var_for_test
 
 
 # def make_json_lost_of_value(brand, model, year):
@@ -94,16 +100,14 @@ def make_json_data(brand, model):
 #     return context
 
 
+
+      
+
 class Grap:
     def __init__(self, brand, model, year):
         self.brand = brand
         self.model = model
         self.year = year
-
-    # def get_lable():
-    #     current_year = datetime.date.today().year
-    #     lables = [current_year + i for i in range(11)]
-    #     return lables
 
     def __make_json_lost_of_value(self):
         '''Создает джейсон для построения графика ПОТЕРИИ СТОИМОСТИ, 
@@ -135,17 +139,29 @@ class Grap:
                 c = b-((a-b)*0.75)
                 price_in_point.append(c)
 
-        lables = json.dumps(lables)
-        data_price = json.dumps(price_in_point)
-        return lables, data_price
+
+        temp_var_for_test = json.dumps({
+            "labels": lables,
+            "datasets":[{
+                        "backgroundColor": 'rgba(255, 99, 132, 0.5)',
+                        "borderColor": 'rgba(255, 9, 13, 0.8)',
+                        "data": price_in_point,
+                        "order": '2',}],
+            }
+            )
+
+        return temp_var_for_test
+
+
+      
+
 
     def get_context(self):
-        js_lables, js_price = self.__make_json_lost_of_value()
+        temp_var_for_test = self.__make_json_lost_of_value()
         context = {
             'year': self.year,
             'brand_name': self.brand,
             'model_name': self.model,
-            'js_lables': js_lables,
-            'js_price': js_price,
+            'temp_var_for_test': temp_var_for_test,
         }
         return context

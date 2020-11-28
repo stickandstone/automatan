@@ -9,30 +9,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src='{% static "front/test.js" %}'></script>
 
-    <script>
-        var labels = JSON.parse("{{js_lables|escapejs}}")
-        var data_price = JSON.parse("{{js_price|escapejs}}")
+    <script>        
+        var testVar = JSON.parse("{{temp_var_for_test|escapejs}}")
+        console.log("testVarUUU")
+        console.log(testVar)
         var name = "{{brand_name}}" + ' ' + "{{model_name}}" + ' ' + "{{year}}" + ' ' +'года'
         var ctx = document.getElementById("myChart").getContext("2d");
-        var dataFirst = {
-            label: name,
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-            borderColor: "rgba(255, 9, 13, 0.8)",
-            data: data_price,
-            order: 2,
-        }
-
-        console.log(dataFirst)
-        var datasetList = [dataFirst]
-
+      
         var chart = new Chart(ctx, {
             type: "line",
-            data: {
-                labels: labels,
-                datasets: datasetList
-            },
+            data: testVar,
             options: {},
         });
+        console.log(chart)
     </script>
 
     <div class="container">
@@ -40,14 +29,16 @@
             <div class="col-sm">
                 <a href="/{{brand_name}}" class="btn btn-outline-primary">Вернуться назад</a>
             </div>
-            {% comment %} <div class="col-sm">
-                <form method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="compar" value=True></input>
-                    <input type="hidden" name="session_var" value="{{brand_name}} {{model_name}} {{year}}"></input>
-                    <input type="submit" class="btn btn-outline-primary" value="Жмяк"></input>
-                </form>
-            </div> {% endcomment %}
+            {% comment %} 
+                <div class="col-sm">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="compar" value=True></input>
+                        <input type="hidden" name="session_var" value="{{brand_name}} {{model_name}} {{year}}"></input>
+                        <input type="submit" class="btn btn-outline-primary" value="Жмяк"></input>
+                    </form>
+                </div> 
+            {% endcomment %}
         </div>
     </div>
 </div>
