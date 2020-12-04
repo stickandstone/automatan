@@ -115,15 +115,22 @@ class Grap:
         current_year = datetime.date.today().year
         lables = [current_year + i for i in range(11)]
         selected_cars = models.Cars.objects.filter(
-            brand=self.brand, model=self.model, year__lte=self.year)
+            brand=self.brand, model=self.model, year__lte=self.year).values('year', 'price')
         price_in_point = []
         print("selected_cars")
-        print(selected_cars[:2])
+        print(selected_cars)
+        # print(selected_cars[:2][0].year)
+
+
         for point in range(11):
             year_for_query_in_point = int(self.year) - point
             # FIX ME SLOW QUERY FIX ME #
+            # static_query_for_spec_year = 
             query_spec_year = selected_cars.filter(
                 year=year_for_query_in_point)
+            print(query_spec_year.explain())
+            print(query_spec_year.iterator(chunk_size=200))
+            # print(query_spec_year.query.__format__('')) 
             if len(query_spec_year) != 0:
                 price_li = [query_spec_year[i].price for i in range(
                     len(query_spec_year))]
@@ -140,6 +147,30 @@ class Grap:
                 # 0.75 просто сгругляшка, временная
                 c = b-((a-b)*0.75)
                 price_in_point.append(c)
+
+
+
+        # for point in range(11):
+        #     year_for_query_in_point = int(self.year) - point
+        #     # FIX ME SLOW QUERY FIX ME #
+        #     query_spec_year = selected_cars.filter(
+        #         year=year_for_query_in_point)
+        #     if len(query_spec_year) != 0:
+        #         price_li = [query_spec_year[i].price for i in range(
+        #             len(query_spec_year))]
+        #         price_in_point.append(np.median(price_li))
+        #     else:
+        #         # Рассчет недостающих точек на графике
+        #         # Когда в базе нет таких данных
+        #         # Например не существует киа рио 1998 года выпуска
+        #         # Решение плохое, требует проработки (может уйти в отрицательную стоимость)
+        #         # слишком линейно показывает падения для совсем новых машин возрастом 2 года
+        #         # ПАДАЕТ когда марка первогодка
+        #         a = price_in_point[-2]
+        #         b = price_in_point[-1]
+        #         # 0.75 просто сгругляшка, временная
+        #         c = b-((a-b)*0.75)
+        #         price_in_point.append(c)
 
 
         temp_var_for_test = json.dumps({
