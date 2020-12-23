@@ -75,8 +75,6 @@ def make_json_data(brand, model):
 #     lables = json.dumps(lables)
 #     data_price = json.dumps(price_in_point)
 #     return lables, data_price
-
-
 """
 Размышления как действовать.
 
@@ -100,9 +98,6 @@ def make_json_data(brand, model):
 #     return context
 
 
-
-      
-
 class Grap:
     def __init__(self, brand, model, year):
         self.brand = brand
@@ -110,27 +105,24 @@ class Grap:
         self.year = year
 
     def __make_json_lost_of_value(self):
-        '''Создает джейсон для построения графика ПОТЕРИИ СТОИМОСТИ, 
+        '''Создает джейсон для построения графика ПОТЕРИИ СТОИМОСТИ,
         где началом координат по оси абцисс считается переданный год'''
         current_year = datetime.date.today().year
         lables = [current_year + i for i in range(11)]
         selected_cars = models.Cars.objects.filter(
-            brand=self.brand, model=self.model, year__lte=self.year).values('year', 'price')
+            brand=self.brand, model=self.model, year__lte=self.year).values('year', 'price').order_by('year')
         price_in_point = []
         print("selected_cars")
         print(selected_cars)
-        # print(selected_cars[:2][0].year)
 
+        for i in selected_cars:
+            print(i['year'])
 
         for point in range(11):
             year_for_query_in_point = int(self.year) - point
             # FIX ME SLOW QUERY FIX ME #
-            # static_query_for_spec_year = 
-            query_spec_year = selected_cars.filter(
-                year=year_for_query_in_point)
-            print(query_spec_year.explain())
-            print(query_spec_year.iterator(chunk_size=200))
-            # print(query_spec_year.query.__format__('')) 
+            # static_query_for_spec_year =
+
             if len(query_spec_year) != 0:
                 price_li = [query_spec_year[i].price for i in range(
                     len(query_spec_year))]
@@ -147,8 +139,6 @@ class Grap:
                 # 0.75 просто сгругляшка, временная
                 c = b-((a-b)*0.75)
                 price_in_point.append(c)
-
-
 
         # for point in range(11):
         #     year_for_query_in_point = int(self.year) - point
@@ -172,22 +162,17 @@ class Grap:
         #         c = b-((a-b)*0.75)
         #         price_in_point.append(c)
 
-
         temp_var_for_test = json.dumps({
             "labels": lables,
-            "datasets":[{
-                        "backgroundColor": 'rgba(255, 99, 132, 0.5)',
-                        "borderColor": 'rgba(255, 9, 13, 0.8)',
-                        "data": price_in_point,
-                        "order": '2',}],
-            }
-            )
+            "datasets": [{
+                "backgroundColor": 'rgba(255, 99, 132, 0.5)',
+                "borderColor": 'rgba(255, 9, 13, 0.8)',
+                "data": price_in_point,
+                "order": '2', }],
+        }
+        )
 
         return temp_var_for_test
-
-
-      
-
 
     def get_context(self):
         temp_var_for_test = self.__make_json_lost_of_value()
