@@ -86,18 +86,6 @@ def make_json_data(brand, model):
 # """
 
 
-# def get_context(brand, model, year):
-#     js_lables, js_price = make_json_lost_of_value(brand, model, year)
-#     context = {
-#         'year': year,
-#         'brand_name': brand,
-#         'model_name': model,
-#         'js_lables': js_lables,
-#         'js_price': js_price,
-#     }
-#     return context
-
-
 class Grap:
     def __init__(self, brand, model, year):
         self.brand = brand
@@ -106,63 +94,31 @@ class Grap:
 
     def __make_json_lost_of_value(self):
         '''Создает джейсон для построения графика ПОТЕРИИ СТОИМОСТИ,
-        где началом координат по оси абцисс считается переданный год'''
+        где началом координат по оси абцисс считается переданный КУДА? ОТКУДА? год'''
         current_year = datetime.date.today().year
         lables = [current_year + i for i in range(11)]
         selected_cars = models.Cars.objects.filter(
             brand=self.brand, model=self.model, year__lte=self.year).values('year', 'price').order_by('year')
         price_in_point = []
-        print("selected_cars")
-        print(selected_cars)
 
+        temp_cars_dict = {}
         for i in selected_cars:
-            print(i['year'])
+            current_year = i['year']
 
-        for point in range(11):
-            year_for_query_in_point = int(self.year) - point
-            # FIX ME SLOW QUERY FIX ME #
-            # static_query_for_spec_year =
-
-            if len(query_spec_year) != 0:
-                price_li = [query_spec_year[i].price for i in range(
-                    len(query_spec_year))]
-                price_in_point.append(np.median(price_li))
+            if current_year in temp_cars_dict:
+                temp_cars_dict[i["year"]].append(i["price"])
             else:
-                # Рассчет недостающих точек на графике
-                # Когда в базе нет таких данных
-                # Например не существует киа рио 1998 года выпуска
-                # Решение плохое, требует проработки (может уйти в отрицательную стоимость)
-                # слишком линейно показывает падения для совсем новых машин возрастом 2 года
-                # ПАДАЕТ когда марка первогодка
-                a = price_in_point[-2]
-                b = price_in_point[-1]
-                # 0.75 просто сгругляшка, временная
-                c = b-((a-b)*0.75)
-                price_in_point.append(c)
+                temp_cars_dict[i["year"]] = [i["price"]]
 
-        # for point in range(11):
-        #     year_for_query_in_point = int(self.year) - point
-        #     # FIX ME SLOW QUERY FIX ME #
-        #     query_spec_year = selected_cars.filter(
-        #         year=year_for_query_in_point)
-        #     if len(query_spec_year) != 0:
-        #         price_li = [query_spec_year[i].price for i in range(
-        #             len(query_spec_year))]
-        #         price_in_point.append(np.median(price_li))
-        #     else:
-        #         # Рассчет недостающих точек на графике
-        #         # Когда в базе нет таких данных
-        #         # Например не существует киа рио 1998 года выпуска
-        #         # Решение плохое, требует проработки (может уйти в отрицательную стоимость)
-        #         # слишком линейно показывает падения для совсем новых машин возрастом 2 года
-        #         # ПАДАЕТ когда марка первогодка
-        #         a = price_in_point[-2]
-        #         b = price_in_point[-1]
-        #         # 0.75 просто сгругляшка, временная
-        #         c = b-((a-b)*0.75)
-        #         price_in_point.append(c)
+        # Приходится прозодится по словарю дважды, чтобы посчитать медиану
+        for j in temp_cars_dict:
+            price = int(np.median(temp_cars_dict[j]))
+            price_in_point.append(price)
 
-        temp_var_for_test = json.dumps({
+        price_in_point.reverse()
+        # ВНИМАНИЕ Добавить предсказание цены в пустые ячейки
+
+        json_res = json.dumps({
             "labels": lables,
             "datasets": [{
                 "backgroundColor": 'rgba(255, 99, 132, 0.5)',
@@ -172,14 +128,14 @@ class Grap:
         }
         )
 
-        return temp_var_for_test
+        return json_res
 
     def get_context(self):
-        temp_var_for_test = self.__make_json_lost_of_value()
+        json_res = self.__make_json_lost_of_value()
         context = {
             'year': self.year,
             'brand_name': self.brand,
             'model_name': self.model,
-            'temp_var_for_test': temp_var_for_test,
+            'temp_var_for_test': json_res,
         }
         return context
