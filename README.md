@@ -1,2 +1,2 @@
 # https://automatan.ru/
-Automatan Frontend Based on Django
+Site about cars using the django framework. Under development.
