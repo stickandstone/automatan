@@ -1,4 +1,2 @@
-# automatan
-Automatan Frontend Based on Django
-
-если начать писать в ридми размышления о разработке этого проекта, не посчитают ли меня ебанутым в хлам? Мол, нашел место, придурок ебатень свою писать. Да пошли вы нахуй, заранее!
+# https://automatan.ru/
+Site about cars using the django framework. Under development.
