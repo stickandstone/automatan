@@ -1,2 +1,2 @@
-# automatan
+# https://automatan.ru/
 Automatan Frontend Based on Django
