@@ -2,6 +2,7 @@
 venv/
 automatan_env/
 .DS_Store
-automatan/front/__pycache__/
+./automatan/automatan/__pycache__/
+./automatan/automatan/front/__pycache__/
 /automatan/MyData.db
-/automatan/automatan/automatan/settings.py
+automatan/secret.txt
